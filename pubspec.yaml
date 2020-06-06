@@ -1,7 +1,6 @@
 name: motion_tab_bar
 description: A TabBar library with interactive motion animaton.
 version: 0.0.1
-author: Rezaul Islam <rejaulcuet88@gmail.com>
 homepage: https://github.com/therezacuet/Motion-Tab-Bar
 
 environment:
