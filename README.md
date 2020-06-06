@@ -21,7 +21,21 @@ dependencies:
 Adding the widget
 
 ```dart
-   MotionTabBar(
+   MotionTabController _tabController;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = new MotionTabController(vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+  
+
+ bottomNavigationBar: MotionTabBar(
         tabOneName: "Home",
         tabTwoName: "Search",
         tabThreeName: "Account",
