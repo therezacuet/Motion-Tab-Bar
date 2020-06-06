@@ -1,14 +1,46 @@
-# MotionTabBar
+# Motion Tab Bar
 
-A new Flutter package.
+A beautiful animated widget for your Flutter apps
+
+| Preview |
+|---------|----------|
+|![MotionTabBar Gif](https://github.com/therezacuet/Motion-Tab-Bar/blob/master/motiontabbar.gif?raw=true) |
+
 
 ## Getting Started
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+Add the plugin:
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+```yaml
+dependencies:
+  motion_tab_bar: ^0.0.1
+```
+
+## Basic Usage
+
+Adding the widget
+
+```dart
+   MotionTabBar(
+        tabOneName: "Home",
+        tabTwoName: "Search",
+        tabThreeName: "Account",
+        tabOneIcon: Icons.home,
+        tabTwoIcon: Icons.search,
+        tabThreeIcon: Icons.account_box,
+        tabIconColor: Colors.green,
+        tabSelectedColor: Colors.red,
+        textStyle: TextStyle(color: Colors.red),
+        onTabItemSelected: (int value){
+          print(value);
+          setState(() {
+            _tabController.index = value;
+          });
+        },
+    )
+```
+
+
+Catch me up on **LinkedIn** @[Rezaul Islam](www.linkedin.com/in/therezacuet "Rezaul Islam")
+
+💙 to Code👨🏽‍💻 Flutter Expert • Dart Kotlin Swift Node Js • Android • Full Stack Mobile Developer
