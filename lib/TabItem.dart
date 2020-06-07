@@ -10,12 +10,12 @@ class TabItem extends StatefulWidget {
         @required this.tabSelectedColor,
         @required this.callbackFunction});
 
-  String title;
-  IconData iconData;
-  bool selected;
-  Function callbackFunction;
-  TextStyle textStyle;
-  Color tabIconColor, tabSelectedColor;
+  final String title;
+  final IconData iconData;
+  final bool selected;
+  final Function callbackFunction;
+  final TextStyle textStyle;
+  final Color tabIconColor, tabSelectedColor;
 
   @override
   _TabItemState createState() => _TabItemState();

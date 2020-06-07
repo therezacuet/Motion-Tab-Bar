@@ -14,7 +14,7 @@ class MotionTabBar extends StatefulWidget {
   final IconData tabOneIcon, tabTwoIcon, tabThreeIcon;
   final Color tabIconColor,tabSelectedColor;
   final TextStyle textStyle;
-  Function onTabItemSelected;
+  final Function onTabItemSelected;
 
   MotionTabBar({
   @required this.tabOneName,this.tabTwoName,this.tabThreeName,this.tabOneIcon,this.tabTwoIcon,this.tabThreeIcon,this.textStyle,this.tabIconColor,this.tabSelectedColor,this.onTabItemSelected,

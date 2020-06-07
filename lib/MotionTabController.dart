@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 /// Coordinates tab selection between a [TabBar] and a [TabBarView].
 ///
 /// The [index] property is the index of the selected tab and the [animation]
@@ -89,9 +88,12 @@ class MotionTabController extends ChangeNotifier {
   ///
   /// The `initialIndex` must be valid given [length] and must not be null. If
   /// [length] is zero, then `initialIndex` must be 0 (the default).
-  MotionTabController({ int initialIndex = 1, this.length = 3, @required TickerProvider vsync })
+  MotionTabController(
+      {int initialIndex = 1, this.length = 3, @required TickerProvider vsync})
       : /*assert(length != null && length >= 0),*/
-        assert(initialIndex != null && initialIndex >= 0 && (length == 0 || initialIndex < length)),
+        assert(initialIndex != null &&
+            initialIndex >= 0 &&
+            (length == 0 || initialIndex < length)),
         _index = initialIndex,
         _previousIndex = initialIndex,
         _animationController = AnimationController.unbounded(
@@ -106,10 +108,9 @@ class MotionTabController extends ChangeNotifier {
     int previousIndex,
     AnimationController animationController,
     this.length,
-  }) : _index = index,
+  })  : _index = index,
         _previousIndex = previousIndex,
         _animationController = animationController;
-
 
   /// Creates a new [TabController] with `index`, `previousIndex`, and `length`
   /// if they are non-null.
@@ -118,7 +119,7 @@ class MotionTabController extends ChangeNotifier {
   ///
   /// When [DefaultMotionTabController.length] is updated, this method is called to
   /// create a new [TabController] without creating a new [AnimationController].
-  MotionTabController _copyWith({ int index, int length, int previousIndex }) {
+  MotionTabController _copyWith({int index, int length, int previousIndex}) {
     return MotionTabController._(
       index: index ?? _index,
       length: length ?? this.length,
@@ -146,13 +147,12 @@ class MotionTabController extends ChangeNotifier {
   /// [TabBarView.children]'s length.
   int length = 3;
 
-  void _changeIndex(int value, { Duration duration, Curve curve }) {
+  void _changeIndex(int value, {Duration duration, Curve curve}) {
     assert(value != null);
     assert(value >= 0 && (value < length || length == 0));
     assert(duration != null || curve == null);
     assert(_indexIsChangingCount >= 0);
-    if (value == _index || length < 2)
-      return;
+    if (value == _index || length < 2) return;
     _previousIndex = index;
     _index = value;
     if (duration != null) {
@@ -183,6 +183,7 @@ class MotionTabController extends ChangeNotifier {
   /// then [index] will also be zero.
   int get index => _index;
   int _index;
+
   set index(int value) {
     _changeIndex(value);
   }
@@ -207,7 +208,8 @@ class MotionTabController extends ChangeNotifier {
   ///
   /// While the animation is running [indexIsChanging] is true. When the
   /// animation completes [offset] will be 0.0.
-  void animateTo(int value, { Duration duration = kTabScrollDuration, Curve curve = Curves.ease }) {
+  void animateTo(int value,
+      {Duration duration = kTabScrollDuration, Curve curve = Curves.ease}) {
     _changeIndex(value, duration: duration, curve: curve);
   }
 
@@ -220,12 +222,12 @@ class MotionTabController extends ChangeNotifier {
   /// TabBarView has been dragged to the left. Similarly a value between
   /// 0.0 and 1.0 implies that the TabBarView has been dragged to the right.
   double get offset => _animationController.value - _index.toDouble();
+
   set offset(double value) {
     assert(value != null);
     assert(value >= -1.0 && value <= 1.0);
     assert(!indexIsChanging);
-    if (value == offset)
-      return;
+    if (value == offset) return;
     _animationController.value = value + _index.toDouble();
   }
 
@@ -310,7 +312,7 @@ class DefaultMotionTabController extends StatefulWidget {
     this.length,
     this.initialIndex = 1,
     @required this.child,
-  }) : assert(initialIndex != null),
+  })  : assert(initialIndex != null),
         assert(length >= 0),
         assert(length == 0 || (initialIndex >= 0 && initialIndex < length)),
         super(key: key);
@@ -341,15 +343,18 @@ class DefaultMotionTabController extends StatefulWidget {
   /// TabController controller = DefaultTabBarController.of(context);
   /// ```
   static MotionTabController of(BuildContext context) {
-    final _TabControllerScope scope = context.dependOnInheritedWidgetOfExactType<_TabControllerScope>();
+    final _TabControllerScope scope =
+        context.dependOnInheritedWidgetOfExactType<_TabControllerScope>();
     return scope?.controller;
   }
 
   @override
-  _DefaultMotionTabControllerState createState() => _DefaultMotionTabControllerState();
+  _DefaultMotionTabControllerState createState() =>
+      _DefaultMotionTabControllerState();
 }
 
-class _DefaultMotionTabControllerState extends State<DefaultMotionTabController> with SingleTickerProviderStateMixin {
+class _DefaultMotionTabControllerState extends State<DefaultMotionTabController>
+    with SingleTickerProviderStateMixin {
   MotionTabController _controller;
 
   @override
