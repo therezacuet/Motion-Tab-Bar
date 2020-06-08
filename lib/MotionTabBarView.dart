@@ -154,12 +154,12 @@ class _TabStyle extends AnimatedWidget {
     // the same value of inherit. Force that to be inherit=true here.
     final TextStyle defaultStyle = (labelStyle
         ?? tabBarTheme.labelStyle
-        ?? themeData.primaryTextTheme.body2
+        ?? themeData.primaryTextTheme.body1
     ).copyWith(inherit: true);
     final TextStyle defaultUnselectedStyle = (unselectedLabelStyle
         ?? tabBarTheme.unselectedLabelStyle
         ?? labelStyle
-        ?? themeData.primaryTextTheme.body2
+        ?? themeData.primaryTextTheme.body1
     ).copyWith(inherit: true);
     final TextStyle textStyle = selected
         ? TextStyle.lerp(defaultStyle, defaultUnselectedStyle, animation.value)
@@ -167,7 +167,7 @@ class _TabStyle extends AnimatedWidget {
 
     final Color selectedColor = labelColor
         ?? tabBarTheme.labelColor
-        ?? themeData.primaryTextTheme.body2.color;
+        ?? themeData.primaryTextTheme.body1.color;
     final Color unselectedColor = unselectedLabelColor
         ?? tabBarTheme.unselectedLabelColor
         ?? selectedColor.withAlpha(0xB2); // 70% alpha
@@ -684,7 +684,7 @@ class TabBar extends StatefulWidget implements PreferredSizeWidget {
   /// opacity unless [unselectedLabelColor] is non-null.
   ///
   /// If this parameter is null, then the color of the [ThemeData.primaryTextTheme]'s
-  /// body2 text color is used.
+  /// body1 text color is used.
   final Color labelColor;
 
   /// The color of unselected tab labels.
@@ -699,7 +699,7 @@ class TabBar extends StatefulWidget implements PreferredSizeWidget {
   /// both selected and unselected label styles.
   ///
   /// If this property is null, then the text style of the
-  /// [ThemeData.primaryTextTheme]'s body2 definition is used.
+  /// [ThemeData.primaryTextTheme]'s body1 definition is used.
   final TextStyle labelStyle;
 
   /// The padding added to each of the tab labels.
@@ -711,7 +711,7 @@ class TabBar extends StatefulWidget implements PreferredSizeWidget {
   ///
   /// If this property is null, then the [labelStyle] value is used. If [labelStyle]
   /// is null, then the text style of the [ThemeData.primaryTextTheme]'s
-  /// body2 definition is used.
+  /// body1 definition is used.
   final TextStyle unselectedLabelStyle;
 
   /// {@macro flutter.widgets.scrollable.dragStartBehavior}
