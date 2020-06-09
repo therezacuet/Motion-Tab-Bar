@@ -2,92 +2,8 @@ import 'dart:math' as math;
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
-// Copyright 2015 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-/// Coordinates tab selection between a [TabBar] and a [TabBarView].
-///
-/// The [index] property is the index of the selected tab and the [animation]
-/// represents the current scroll positions of the tab bar and the tab bar view.
-/// The selected tab's index can be changed with [animateTo].
-///
-/// A stateful widget that builds a [TabBar] or a [TabBarView] can create
-/// a [TabController] and share it directly.
-///
-/// When the [TabBar] and [TabBarView] don't have a convenient stateful
-/// ancestor, a [TabController] can be shared by providing a
-/// [DefaultMotionTabController] inherited widget.
-///
-/// {@animation 700 540 https://flutter.github.io/assets-for-api-docs/assets/material/tabs.mp4}
-///
-/// {@tool sample}
-///
-/// This widget introduces a [Scaffold] with an [AppBar] and a [TabBar].
-///
-/// ```dart
-/// class MyTabbedPage extends StatefulWidget {
-///   const MyTabbedPage({ Key key }) : super(key: key);
-///   @override
-///   _MyTabbedPageState createState() => _MyTabbedPageState();
-/// }
-///
-/// class _MyTabbedPageState extends State<MyTabbedPage> with SingleTickerProviderStateMixin {
-///   final List<Tab> myTabs = <Tab>[
-///     Tab(text: 'LEFT'),
-///     Tab(text: 'RIGHT'),
-///   ];
-///
-///   TabController _tabController;
-///
-///   @override
-///   void initState() {
-///     super.initState();
-///     _tabController = TabController(vsync: this, length: myTabs.length);
-///   }
-///
-///  @override
-///  void dispose() {
-///    _tabController.dispose();
-///    super.dispose();
-///  }
-///
-///   @override
-///   Widget build(BuildContext context) {
-///     return Scaffold(
-///       appBar: AppBar(
-///         bottom: TabBar(
-///           controller: _tabController,
-///           tabs: myTabs,
-///         ),
-///       ),
-///       body: TabBarView(
-///         controller: _tabController,
-///         children: myTabs.map((Tab tab) {
-///           final String label = tab.text.toLowerCase();
-///           return Center(
-///             child: Text(
-///               'This is the $label tab',
-///               style: const TextStyle(fontSize: 36),
-///             ),
-///           );
-///         }).toList(),
-///       ),
-///     );
-///   }
-/// }
-/// ```
-/// {@end-tool}
 class MotionTabController extends ChangeNotifier {
-  /// Creates an object that manages the state required by [TabBar] and a
-  /// [TabBarView].
-  ///
-  /// The [length] must not be null or negative. Typically it's a value greater
-  /// than one, i.e. typically there are two or more tabs. The [length] must
-  /// match [TabBar.tabs]'s and [TabBarView.children]'s length.
-  ///
-  /// The `initialIndex` must be valid given [length] and must not be null. If
-  /// [length] is zero, then `initialIndex` must be 0 (the default).
+  
   MotionTabController(
       {int initialIndex = 1, this.length = 3, @required TickerProvider vsync})
       : /*assert(length != null && length >= 0),*/
@@ -112,13 +28,6 @@ class MotionTabController extends ChangeNotifier {
         _previousIndex = previousIndex,
         _animationController = animationController;
 
-  /// Creates a new [TabController] with `index`, `previousIndex`, and `length`
-  /// if they are non-null.
-  ///
-  /// This method is used by [DefaultMotionTabController].
-  ///
-  /// When [DefaultMotionTabController.length] is updated, this method is called to
-  /// create a new [TabController] without creating a new [AnimationController].
   MotionTabController _copyWith({int index, int length, int previousIndex}) {
     return MotionTabController._(
       index: index ?? _index,
@@ -128,16 +37,6 @@ class MotionTabController extends ChangeNotifier {
     );
   }
 
-  /// An animation whose value represents the current position of the [TabBar]'s
-  /// selected tab indicator as well as the scrollOffsets of the [TabBar]
-  /// and [TabBarView].
-  ///
-  /// The animation's value ranges from 0.0 to [length] - 1.0. After the
-  /// selected tab is changed, the animation's value equals [index]. The
-  /// animation's value can be [offset] by +/- 1.0 to reflect [TabBarView]
-  /// drag scrolling.
-  ///
-  /// If this [TabController] was disposed, then return null.
   Animation<double> get animation => _animationController?.view;
   AnimationController _animationController;
 
@@ -256,50 +155,6 @@ class _TabControllerScope extends InheritedWidget {
   }
 }
 
-/// The [TabController] for descendant widgets that don't specify one
-/// explicitly.
-///
-/// [DefaultMotionTabController] is an inherited widget that is used to share a
-/// [TabController] with a [TabBar] or a [TabBarView]. It's used when sharing an
-/// explicitly created [TabController] isn't convenient because the tab bar
-/// widgets are created by a stateless parent widget or by different parent
-/// widgets.
-///
-/// {@animation 700 540 https://flutter.github.io/assets-for-api-docs/assets/material/tabs.mp4}
-///
-/// ```dart
-/// class MyDemo extends StatelessWidget {
-///   final List<Tab> myTabs = <Tab>[
-///     Tab(text: 'LEFT'),
-///     Tab(text: 'RIGHT'),
-///   ];
-///
-///   @override
-///   Widget build(BuildContext context) {
-///     return DefaultMotionTabController(
-///       length: myTabs.length,
-///       child: Scaffold(
-///         appBar: AppBar(
-///           bottom: TabBar(
-///             tabs: myTabs,
-///           ),
-///         ),
-///         body: TabBarView(
-///           children: myTabs.map((Tab tab) {
-///             final String label = tab.text.toLowerCase();
-///             return Center(
-///               child: Text(
-///                 'This is the $label tab',
-///                 style: const TextStyle(fontSize: 36),
-///               ),
-///             );
-///           }).toList(),
-///         ),
-///       ),
-///     );
-///   }
-/// }
-/// ```
 class DefaultMotionTabController extends StatefulWidget {
   /// Creates a default tab controller for the given [child] widget.
   ///
