@@ -1,3 +1,8 @@
+## [0.1.1] - 15-06-2020.
+
+* Fix Initial Index Issue.
+* Fix Initial Tab Selected Issue.
+
 ## [0.1.0] - 07-06-2020.
 
 * Initial release.

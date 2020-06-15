@@ -68,11 +68,14 @@ class _MotionTabBarState extends State<MotionTabBar>
     _fadeOutController = AnimationController(
         vsync: this, duration: Duration(milliseconds: (ANIM_DURATION ~/ 5)));
 
-    _positionTween = Tween<double>(begin: 0, end: 0);
+    _positionTween = Tween<double>(begin: currentSelected == 0 ? -1 : currentSelected == 1 ? 0: 1, end: 0);
+
     _positionAnimation = _positionTween.animate(
         CurvedAnimation(parent: _animationController, curve: Curves.easeOut))
       ..addListener(() {
-        setState(() {});
+        setState(() {
+
+        });
       });
 
     _fadeFabOutAnimation = Tween<double>(begin: 1, end: 0).animate(

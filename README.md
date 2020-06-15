@@ -13,7 +13,7 @@ Add the plugin:
 
 ```yaml
 dependencies:
-  motion_tab_bar: ^0.0.1
+  motion_tab_bar: ^0.1.1
 ```
 
 ## Basic Usage
@@ -25,7 +25,7 @@ Adding the widget
   @override
   void initState() {
     super.initState();
-    _tabController = new MotionTabController(vsync: this);
+    _tabController = new MotionTabController(initialIndex:1,vsync: this);
   }
 
   @override
@@ -45,6 +45,7 @@ Adding the widget
         tabIconColor: Colors.green,
         tabSelectedColor: Colors.red,
         textStyle: TextStyle(color: Colors.red),
+        initialSelectedTab: 1,
         onTabItemSelected: (int value){
           print(value);
           setState(() {
