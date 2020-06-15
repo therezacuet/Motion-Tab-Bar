@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class MotionTabController extends ChangeNotifier {
 
-  MotionTabController({int initialIndex,this.length, @required TickerProvider vsync})
+  MotionTabController({int initialIndex,this.length = 3, @required TickerProvider vsync})
       : /*assert(length != null && length >= 0),*/
         assert(initialIndex != null &&
             initialIndex >= 0 &&
@@ -216,7 +216,7 @@ class _DefaultMotionTabControllerState extends State<DefaultMotionTabController>
     super.initState();
     _controller = MotionTabController(
       vsync: this,
-      //length: widget.length,
+      length: widget.length,
       initialIndex: widget.initialIndex,
     );
   }
