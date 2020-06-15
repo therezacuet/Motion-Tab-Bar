@@ -3,10 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 class MotionTabController extends ChangeNotifier {
-  
+
   MotionTabController(
-      {int initialIndex = 1, this.length = 3, @required TickerProvider vsync})
-      : /*assert(length != null && length >= 0),*/
+      {int initialIndex, this.length = 3, @required TickerProvider vsync})
+      : assert(length != null && length >= 0),
         assert(initialIndex != null &&
             initialIndex >= 0 &&
             (length == 0 || initialIndex < length)),
@@ -165,7 +165,7 @@ class DefaultMotionTabController extends StatefulWidget {
   const DefaultMotionTabController({
     Key key,
     this.length,
-    this.initialIndex = 1,
+    this.initialIndex,
     @required this.child,
   })  : assert(initialIndex != null),
         assert(length >= 0),

@@ -34,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
   @override
   void initState() {
     super.initState();
-    _tabController = new MotionTabController(vsync: this);
+    _tabController = new MotionTabController(initialIndex:1,vsync: this);
   }
 
   @override
@@ -59,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
         tabThreeIcon: Icons.account_box,
         tabIconColor: Colors.green,
         tabSelectedColor: Colors.red,
+        currentSelectedTab: 1,
         textStyle: TextStyle(color: Colors.red),
         onTabItemSelected: (int value){
           print(value);

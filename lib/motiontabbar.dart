@@ -15,15 +15,17 @@ class MotionTabBar extends StatefulWidget {
   final Color tabIconColor,tabSelectedColor;
   final TextStyle textStyle;
   final Function onTabItemSelected;
+  final int initialSelectedTab;
 
   MotionTabBar({
-  @required this.tabOneName,this.tabTwoName,this.tabThreeName,this.tabOneIcon,this.tabTwoIcon,this.tabThreeIcon,this.textStyle,this.tabIconColor,this.tabSelectedColor,this.onTabItemSelected,
+  @required this.tabOneName,this.tabTwoName,this.tabThreeName,this.tabOneIcon,this.tabTwoIcon,this.tabThreeIcon,this.textStyle,this.tabIconColor,this.tabSelectedColor,this.onTabItemSelected,this.initialSelectedTab
   }) :  assert(tabOneName != null),
         assert(tabTwoName != null),
         assert(tabThreeName != null),
         assert(tabOneIcon != null),
         assert(tabTwoIcon != null),
         assert(tabThreeIcon != null),
+        assert(initialSelectedTab != null),
         assert(tabSelectedColor != null),
         assert(tabIconColor != null),
         assert(textStyle != null);
@@ -42,18 +44,24 @@ class _MotionTabBarState extends State<MotionTabBar>
   AnimationController _fadeOutController;
   Animation<double> _fadeFabOutAnimation;
   Animation<double> _fadeFabInAnimation;
+  List<IconData> iconList = [];
 
   double fabIconAlpha = 1;
   IconData nextIcon;
   IconData activeIcon;
-  int currentSelected = 1;
+  int currentSelected;
 
   @override
   void initState() {
     super.initState();
 
+    currentSelected = widget.initialSelectedTab;
+    iconList.add(widget.tabOneIcon);
+    iconList.add(widget.tabTwoIcon);
+    iconList.add(widget.tabThreeIcon);
+
     nextIcon = widget.tabTwoIcon;
-    activeIcon = widget.tabTwoIcon;
+    activeIcon = iconList[currentSelected];
 
     _animationController = AnimationController(
         vsync: this, duration: Duration(milliseconds: ANIM_DURATION));
