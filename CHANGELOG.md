@@ -1,4 +1,4 @@
-## [0.1.1] - 15-06-2020.
+## [0.1.2] - 15-06-2020.
 
 * Fix Initial Index Issue.
 * Fix Initial Tab Selected Issue.
