@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
         tabThreeIcon: Icons.account_box,
         tabIconColor: Colors.green,
         tabSelectedColor: Colors.red,
-        currentSelectedTab: 1,
+        initialSelectedTab: 1,
         textStyle: TextStyle(color: Colors.red),
         onTabItemSelected: (int value){
           print(value);
