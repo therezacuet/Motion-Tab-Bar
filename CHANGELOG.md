@@ -1,3 +1,7 @@
+## [0.1.3] - 23-06-2020.
+
+* Controller Issue fix.
+
 ## [0.1.2] - 15-06-2020.
 
 * Fix Initial Index Issue.
