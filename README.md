@@ -3,7 +3,7 @@
 A beautiful animated widget for your Flutter apps
 
 | Preview |
-|---------|----------|
+|---------|
 |![MotionTabBar Gif](https://github.com/therezacuet/Motion-Tab-Bar/blob/master/motiontabbar.gif?raw=true) |
 
 
@@ -21,38 +21,60 @@ dependencies:
 Adding the widget
 
 ```dart
-   MotionTabController _tabController;
-  @override
-  void initState() {
-    super.initState();
-    _tabController = new MotionTabController(initialIndex:1,vsync: this);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _tabController.dispose();
-  }
+  MotionTabController _tabController;
   
-
- bottomNavigationBar: MotionTabBar(
-        tabOneName: "Home",
-        tabTwoName: "Search",
-        tabThreeName: "Account",
-        tabOneIcon: Icons.home,
-        tabTwoIcon: Icons.search,
-        tabThreeIcon: Icons.account_box,
-        tabIconColor: Colors.green,
-        tabSelectedColor: Colors.red,
-        textStyle: TextStyle(color: Colors.red),
-        initialSelectedTab: 1,
-        onTabItemSelected: (int value){
-          print(value);
-          setState(() {
-            _tabController.index = value;
-          });
-        },
-    )
+    @override
+    void initState() {
+      super.initState();
+      _tabController = MotionTabController(initialIndex: 1, vsync: this);
+    }
+  
+    @override
+    void dispose() {
+      super.dispose();
+      _tabController.dispose();
+    }
+  
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        bottomNavigationBar: MotionTabBar(
+          labels: ["Home", "Search", "Profile"],
+          icons: [Icons.home, Icons.search, Icons.account_box],
+          initialSelectedTab: "Search",
+          tabIconColor: Colors.green,
+          tabSelectedColor: Colors.red,
+          textStyle: TextStyle(color: Colors.red),
+          onTabItemSelected: (int value) {
+            print(value);
+            setState(() => _tabController.index = value);
+          },
+        ),
+        body: MotionTabBarView(
+          controller: _tabController,
+          children: <Widget>[
+            Container(
+              child: Center(
+                child: Text("Home"),
+              ),
+            ),
+            Container(
+              child: Center(
+                child: Text("Search"),
+              ),
+            ),
+            Container(
+              child: Center(
+                child: Text("Profile"),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 ```
 
 

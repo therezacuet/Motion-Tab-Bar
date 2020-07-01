@@ -46,40 +46,41 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        bottomNavigationBar: MotionTabBar(
-          labels: ["Home", "Search", "Account"],
-          icons: [Icons.home, Icons.search, Icons.account_box],
-          initialSelectedTab: "Search",
-          tabIconColor: Colors.green,
-          tabSelectedColor: Colors.red,
-          textStyle: TextStyle(color: Colors.red),
-          onTabItemSelected: (int value) {
-            print(value);
-            setState(() => _tabController.index = value);
-          },
-        ),
-        body: MotionTabBarView(
-          controller: _tabController,
-          children: <Widget>[
-            Container(
-              child: Center(
-                child: Text("Home"),
-              ),
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      bottomNavigationBar: MotionTabBar(
+        labels: ["Home", "Search", "Profile"],
+        icons: [Icons.home, Icons.search, Icons.account_box],
+        initialSelectedTab: "Search",
+        tabIconColor: Colors.green,
+        tabSelectedColor: Colors.red,
+        textStyle: TextStyle(color: Colors.red),
+        onTabItemSelected: (int value) {
+          print(value);
+          setState(() => _tabController.index = value);
+        },
+      ),
+      body: MotionTabBarView(
+        controller: _tabController,
+        children: <Widget>[
+          Container(
+            child: Center(
+              child: Text("Home"),
             ),
-            Container(
-              child: Center(
-                child: Text("Search"),
-              ),
+          ),
+          Container(
+            child: Center(
+              child: Text("Search"),
             ),
-            Container(
-              child: Center(
-                child: Text("Account"),
-              ),
+          ),
+          Container(
+            child: Center(
+              child: Text("Profile"),
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }
