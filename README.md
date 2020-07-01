@@ -13,7 +13,7 @@ Add the plugin:
 
 ```yaml
 dependencies:
-  motion_tab_bar: ^0.1.3
+  motion_tab_bar: ^0.1.4
 ```
 
 ## Basic Usage
@@ -33,26 +33,26 @@ Adding the widget
     super.dispose();
     _tabController.dispose();
   }
-  
 
- bottomNavigationBar: MotionTabBar(
-        tabOneName: "Home",
-        tabTwoName: "Search",
-        tabThreeName: "Account",
-        tabOneIcon: Icons.home,
-        tabTwoIcon: Icons.search,
-        tabThreeIcon: Icons.account_box,
-        tabIconColor: Colors.green,
-        tabSelectedColor: Colors.red,
-        textStyle: TextStyle(color: Colors.red),
-        initialSelectedTab: 1,
-        onTabItemSelected: (int value){
-          print(value);
-          setState(() {
-            _tabController.index = value;
-          });
-        },
-    )
+  bottomNavigationBar: MotionTabBar(
+          labels: [
+            "Account","Home","Dashboard"
+          ],
+          initialSelectedTab: "Home",
+          tabIconColor: Colors.green,
+          tabSelectedColor: Colors.red,
+          onTabItemSelected: (int value){
+               print(value);
+               setState(() {
+                  _tabController.index = value;
+               });
+          },
+          icons: [
+            Icons.account_box,Icons.home,Icons.menu
+          ],
+          textStyle: TextStyle(color: Colors.red),
+  ),
+
 ```
 
 

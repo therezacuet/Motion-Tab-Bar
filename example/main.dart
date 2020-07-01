@@ -50,20 +50,31 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           title: Text(widget.title),
         ),
         bottomNavigationBar: MotionTabBar(
-          labels: ["Home", "Search", "Account"],
-          icons: [Icons.home, Icons.search, Icons.account_box],
-          initialSelectedTab: "Search",
+          labels: [
+            "Account","Home","Dashboard"
+          ],
+          initialSelectedTab: "Home",
           tabIconColor: Colors.green,
           tabSelectedColor: Colors.red,
-          textStyle: TextStyle(color: Colors.red),
-          onTabItemSelected: (int value) {
+          onTabItemSelected: (int value){
             print(value);
-            setState(() => _tabController.index = value);
+            setState(() {
+              _tabController.index = value;
+            });
           },
+          icons: [
+            Icons.account_box,Icons.home,Icons.menu
+          ],
+          textStyle: TextStyle(color: Colors.red),
         ),
         body: MotionTabBarView(
           controller: _tabController,
           children: <Widget>[
+            Container(
+              child: Center(
+                child: Text("Account"),
+              ),
+            ),
             Container(
               child: Center(
                 child: Text("Home"),
@@ -71,12 +82,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             ),
             Container(
               child: Center(
-                child: Text("Search"),
-              ),
-            ),
-            Container(
-              child: Center(
-                child: Text("Account"),
+                child: Text("Dashboard"),
               ),
             ),
           ],
