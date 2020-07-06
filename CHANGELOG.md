@@ -1,3 +1,7 @@
+## [0.1.5] - 07-07-2020.
+
+* Remove extra space from top of tab bar.
+
 ## [0.1.4] - 01-07-2020.
 
 * Tab Item Dynamic. Now you can use multiple tab.
