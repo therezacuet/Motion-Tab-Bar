@@ -1,3 +1,8 @@
+## [0.1.4] - 01-07-2020.
+
+* Tab Item Dynamic. Now you can use multiple tab.
+* Tab Item Animation Delay fix
+
 ## [0.1.3] - 23-06-2020.
 
 * Controller Issue fix.

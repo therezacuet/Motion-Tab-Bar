@@ -28,13 +28,13 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
-
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   MotionTabController _tabController;
+
   @override
   void initState() {
     super.initState();
-    _tabController = new MotionTabController(initialIndex:1,vsync: this);
+    _tabController = MotionTabController(initialIndex: 1, vsync: this);
   }
 
   @override
@@ -43,51 +43,49 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     _tabController.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      bottomNavigationBar: MotionTabBar(
-        tabOneName: "Home",
-        tabTwoName: "Search",
-        tabThreeName: "Account",
-        tabOneIcon: Icons.home,
-        tabTwoIcon: Icons.search,
-        tabThreeIcon: Icons.account_box,
-        tabIconColor: Colors.green,
-        tabSelectedColor: Colors.red,
-        initialSelectedTab: 1,
-        textStyle: TextStyle(color: Colors.red),
-        onTabItemSelected: (int value){
-          print(value);
-          setState(() {
-            _tabController.index = value;
-          });
-        },
-    ),
-      body: MotionTabBarView(
-        controller: _tabController,
-        children: <Widget>[
-          Container(
-            child: Center(
-              child: Text("Home"),
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        bottomNavigationBar: MotionTabBar(
+          labels: [
+            "Account","Home","Dashboard"
+          ],
+          initialSelectedTab: "Home",
+          tabIconColor: Colors.green,
+          tabSelectedColor: Colors.red,
+          onTabItemSelected: (int value){
+            print(value);
+            setState(() {
+              _tabController.index = value;
+            });
+          },
+          icons: [
+            Icons.account_box,Icons.home,Icons.menu
+          ],
+          textStyle: TextStyle(color: Colors.red),
+        ),
+        body: MotionTabBarView(
+          controller: _tabController,
+          children: <Widget>[
+            Container(
+              child: Center(
+                child: Text("Account"),
+              ),
             ),
-          ),
-          Container(
-            child: Center(
-              child: Text("Search"),
+            Container(
+              child: Center(
+                child: Text("Home"),
+              ),
             ),
-          ),
-          Container(
-            child: Center(
-              child: Text("Account"),
+            Container(
+              child: Center(
+                child: Text("Dashboard"),
+              ),
             ),
-          ),
-        ],
-      )
-    );
+          ],
+        ));
   }
 }
