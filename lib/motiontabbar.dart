@@ -124,7 +124,7 @@ class _MotionTabBarState extends State<MotionTabBar>
       children: <Widget>[
         Container(
           height: 65,
-          margin: EdgeInsets.only(top: 45),
+          //margin: EdgeInsets.only(top: 45),
           decoration: BoxDecoration(color: Colors.white, boxShadow: [
             BoxShadow(
               color: Colors.black12,
@@ -142,7 +142,7 @@ class _MotionTabBarState extends State<MotionTabBar>
           child: Container(
             decoration: BoxDecoration(color: Colors.transparent),
             child: Align(
-              heightFactor: 1,
+              heightFactor: 0,
               alignment: Alignment(_positionAnimation.value, 0),
               child: FractionallySizedBox(
                 widthFactor: 1 / tabAmount,
