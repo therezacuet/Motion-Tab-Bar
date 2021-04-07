@@ -2,10 +2,9 @@
 
 A beautiful animated widget for your Flutter apps
 
-| Preview |
-|---------|----------|
-|![MotionTabBar Gif](https://github.com/therezacuet/Motion-Tab-Bar/blob/master/motiontabbar.gif?raw=true) |
+**Preview:**
 
+|![MotionTabBar Gif](https://github.com/therezacuet/Motion-Tab-Bar/blob/master/motiontabbar.gif?raw=true) |
 
 ## Getting Started
 
