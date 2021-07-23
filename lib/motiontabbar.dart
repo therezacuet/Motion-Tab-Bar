@@ -176,8 +176,8 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
                       ),
                     ),
                     SizedBox(
-                      height: widget.tabSize! + 10,
-                      width: widget.tabSize! + 30,
+                      height: widget.tabSize! + 15,
+                      width: widget.tabSize! + 35,
                       child: CustomPaint(painter: HalfPainter(color: widget.tabBarColor)),
                     ),
                     SizedBox(
@@ -259,17 +259,32 @@ class HalfPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Rect beforeRect = Rect.fromLTWH(0, (size.height / 2) - 10, 10, 10);
-    final Rect largeRect = Rect.fromLTWH(10, 0, size.width - 20, 70);
-    final Rect afterRect = Rect.fromLTWH(size.width - 10, (size.height / 2) - 10, 10, 10);
+    // final Rect beforeRect = Rect.fromLTWH(0, (size.height / 2) - 10, 10, 10);
+    // final Rect largeRect = Rect.fromLTWH(10, 0, size.width - 20, 70);
+    // final Rect afterRect = Rect.fromLTWH(size.width - 10, (size.height / 2) - 10, 10, 10);
+
+    // final path = Path();
+
+    // path.arcTo(beforeRect, vector.radians(0), vector.radians(90), false);
+    // path.lineTo(20, size.height / 2);
+    // path.arcTo(largeRect, vector.radians(0), -vector.radians(180), false);
+    // path.moveTo(size.width - 10, size.height / 2);
+    // path.lineTo(size.width - 10, (size.height / 2) - 10);
+    // path.arcTo(afterRect, vector.radians(180), vector.radians(-90), false);
+
+    final double curveSize = 10;
+    final double xStartingPos = 0;
+    final double yStartingPos = (size.height / 2);
+    final double yMaxPos = yStartingPos - curveSize;
 
     final path = Path();
-    path.arcTo(beforeRect, vector.radians(0), vector.radians(90), false);
-    path.lineTo(20, size.height / 2);
-    path.arcTo(largeRect, vector.radians(0), -vector.radians(180), false);
-    path.moveTo(size.width - 10, size.height / 2);
-    path.lineTo(size.width - 10, (size.height / 2) - 10);
-    path.arcTo(afterRect, vector.radians(180), vector.radians(-90), false);
+
+    path.moveTo(xStartingPos, yStartingPos);
+    path.lineTo(size.width - xStartingPos, yStartingPos);
+    path.quadraticBezierTo(size.width - (curveSize), yStartingPos, size.width - (curveSize + 5), yMaxPos);
+    path.lineTo(xStartingPos + (curveSize + 5), yMaxPos);
+    path.quadraticBezierTo(xStartingPos + (curveSize), yStartingPos, xStartingPos, yStartingPos);
+
     path.close();
 
     canvas.drawPath(path, Paint()..color = color ?? Colors.white);
