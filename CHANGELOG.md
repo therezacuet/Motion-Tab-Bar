@@ -1,3 +1,19 @@
+## [0.2.0] - 23-July-2021
+#### Updated by @[Kimman wky](https://github.com/kimmanwky "Kimman wky")
+
+<br/>
+
+* Update to support null-safety
+* add new parameters:
+    * tabBarHeight (double)
+    * tabBarColor (Colors)
+    * tabSize (double)
+    * tabIconSize (double)
+    * tabIconSelectedSize (double)
+    * tabIconSelectedColor (Colors)
+
+<br/>
+
 ## [0.1.5] - 07-07-2020.
 
 * Remove extra space from top of tab bar.

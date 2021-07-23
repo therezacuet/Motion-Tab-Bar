@@ -52,10 +52,22 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         title: Text(widget.title!),
       ),
       bottomNavigationBar: MotionTabBar(
-        labels: const ["Account", "Home", "Dashboard"],
         initialSelectedTab: "Home",
-        tabIconColor: Colors.green,
-        tabSelectedColor: Colors.red,
+        labels: const ["Dashboard", "Home", "Profile"],
+        icons: const [Icons.dashboard, Icons.home, Icons.people_alt],
+        tabSize: 50,
+        tabBarHeight: 55,
+        textStyle: const TextStyle(
+          fontSize: 12,
+          color: Colors.black,
+          fontWeight: FontWeight.w500,
+        ),
+        tabIconColor: Colors.blue[600],
+        tabIconSize: 28.0,
+        tabIconSelectedSize: 26.0,
+        tabSelectedColor: Colors.blue[900],
+        tabIconSelectedColor: Colors.white,
+        tabBarColor: const Color(0xFFAFAFAF),
         onTabItemSelected: (int value) {
           // ignore: avoid_print
           print(value);
@@ -63,21 +75,19 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             _tabController!.index = value;
           });
         },
-        icons: const [Icons.account_box, Icons.home, Icons.menu],
-        textStyle: const TextStyle(color: Colors.red),
       ),
       body: MotionTabBarView(
         controller: _tabController,
         // ignore: prefer_const_literals_to_create_immutables
         children: <Widget>[
           const Center(
-            child: Text("Account"),
+            child: Text("Dashboard"),
           ),
           const Center(
             child: Text("Home"),
           ),
           const Center(
-            child: Text("Dashboard"),
+            child: Text("Profile"),
           ),
         ],
       ),

@@ -12,7 +12,7 @@ Add the plugin:
 
 ```yaml
 dependencies:
-  motion_tab_bar: ^0.1.5
+  motion_tab_bar: ^0.2.0
 ```
 
 ## Basic Usage
@@ -34,22 +34,29 @@ Adding the widget
   }
 
   bottomNavigationBar: MotionTabBar(
-          labels: [
-            "Account","Home","Dashboard"
-          ],
-          initialSelectedTab: "Home",
-          tabIconColor: Colors.green,
-          tabSelectedColor: Colors.red,
-          onTabItemSelected: (int value){
-               print(value);
-               setState(() {
-                  _tabController.index = value;
-               });
-          },
-          icons: [
-            Icons.account_box,Icons.home,Icons.menu
-          ],
-          textStyle: TextStyle(color: Colors.red),
+    initialSelectedTab: "Home",
+    labels: const ["Dashboard", "Home", "Profile"],
+    icons: const [Icons.dashboard, Icons.home, Icons.people_alt],
+    tabSize: 50,
+    tabBarHeight: 55,
+    textStyle: const TextStyle(
+      fontSize: 12,
+      color: Colors.black,
+      fontWeight: FontWeight.w500,
+    ),
+    tabIconColor: Colors.blue[600],
+    tabIconSize: 28.0,
+    tabIconSelectedSize: 26.0,
+    tabSelectedColor: Colors.blue[900],
+    tabIconSelectedColor: Colors.white,
+    tabBarColor: const Color(0xFFCFCFCF),
+    onTabItemSelected: (int value) {
+      // ignore: avoid_print
+      print(value);
+      setState(() {
+        _tabController!.index = value;
+      });
+    },
   ),
 
 ```
