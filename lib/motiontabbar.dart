@@ -8,7 +8,8 @@ import 'package:vector_math/vector_math.dart' as vector;
 typedef MotionTabBuilder = Widget Function();
 
 class MotionTabBar extends StatefulWidget {
-  final Color? tabIconColor, tabSelectedColor;
+  final Color? tabIconColor, tabIconSelectedColor, tabSelectedColor, tabBarColor;
+  final double? tabIconSize, tabIconSelectedSize;
   final TextStyle? textStyle;
   final Function? onTabItemSelected;
   final String initialSelectedTab;
@@ -19,7 +20,11 @@ class MotionTabBar extends StatefulWidget {
   MotionTabBar({
     this.textStyle,
     this.tabIconColor = Colors.black,
+    this.tabIconSize = 24,
+    this.tabIconSelectedColor = Colors.white,
+    this.tabIconSelectedSize = 24,
     this.tabSelectedColor = Colors.black,
+    this.tabBarColor = Colors.white,
     this.onTabItemSelected,
     required this.initialSelectedTab,
     required this.labels,
@@ -116,13 +121,16 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
         Container(
           height: 65,
           //margin: EdgeInsets.only(top: 45),
-          decoration: BoxDecoration(color: Colors.white, boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              offset: Offset(0, -1),
-              blurRadius: 5,
-            ),
-          ]),
+          decoration: BoxDecoration(
+            color: widget.tabBarColor,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                offset: Offset(0, -1),
+                blurRadius: 5,
+              ),
+            ],
+          ),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -168,7 +176,7 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
                     SizedBox(
                       height: 70,
                       width: 90,
-                      child: CustomPaint(painter: HalfPainter()),
+                      child: CustomPaint(painter: HalfPainter(color: widget.tabBarColor)),
                     ),
                     SizedBox(
                       height: 60,
@@ -176,7 +184,7 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: widget.tabSelectedColor ?? Colors.black,
+                          color: widget.tabSelectedColor,
                           border: Border.all(
                             color: Colors.white,
                             width: 5,
@@ -189,7 +197,8 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
                             opacity: fabIconAlpha,
                             child: Icon(
                               activeIcon,
-                              color: Colors.white,
+                              color: widget.tabIconSelectedColor,
+                              size: widget.tabIconSelectedSize,
                             ),
                           ),
                         ),
@@ -214,8 +223,8 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
         iconData: icon,
         title: tabLabel,
         textStyle: widget.textStyle ?? TextStyle(color: Colors.black),
-        tabSelectedColor: widget.tabSelectedColor ?? Colors.black,
         tabIconColor: widget.tabIconColor ?? Colors.black,
+        tabIconSize: widget.tabIconSize,
         callbackFunction: () {
           setState(() {
             activeIcon = icon;
@@ -248,6 +257,9 @@ class HalfClipper extends CustomClipper<Rect> {
 }
 
 class HalfPainter extends CustomPainter {
+  final Color? color;
+  HalfPainter({this.color});
+
   @override
   void paint(Canvas canvas, Size size) {
     final Rect beforeRect = Rect.fromLTWH(0, (size.height / 2) - 10, 10, 10);
@@ -263,7 +275,7 @@ class HalfPainter extends CustomPainter {
     path.arcTo(afterRect, vector.radians(180), vector.radians(-90), false);
     path.close();
 
-    canvas.drawPath(path, Paint()..color = Colors.white);
+    canvas.drawPath(path, Paint()..color = color ?? Colors.white);
   }
 
   @override

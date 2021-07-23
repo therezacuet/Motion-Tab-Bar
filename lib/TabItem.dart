@@ -14,7 +14,8 @@ class TabItem extends StatefulWidget {
   final IconData? iconData;
   final TextStyle textStyle;
   final Function callbackFunction;
-  final Color tabIconColor, tabSelectedColor;
+  final Color tabIconColor;
+  final double? tabIconSize;
 
   TabItem({
     required this.title,
@@ -22,8 +23,8 @@ class TabItem extends StatefulWidget {
     required this.iconData,
     required this.textStyle,
     required this.tabIconColor,
-    required this.tabSelectedColor,
     required this.callbackFunction,
+    this.tabIconSize = 24,
   });
 
   @override
@@ -91,7 +92,11 @@ class _TabItemState extends State<TabItem> {
                   splashColor: Colors.transparent,
                   padding: EdgeInsets.all(0),
                   alignment: Alignment(0, 0),
-                  icon: Icon(widget.iconData, color: widget.tabIconColor),
+                  icon: Icon(
+                    widget.iconData,
+                    color: widget.tabIconColor,
+                    size: widget.tabIconSize,
+                  ),
                   onPressed: () {
                     widget.callbackFunction();
                   },
