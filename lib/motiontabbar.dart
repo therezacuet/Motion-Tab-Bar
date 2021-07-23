@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'TabItem.dart';
 import 'package:vector_math/vector_math.dart' as vector;
 
-typedef MotionTabBuilder = Widget Function(
-);
+typedef MotionTabBuilder = Widget Function();
 
 class MotionTabBar extends StatefulWidget {
-  final Color tabIconColor, tabSelectedColor;
-  final TextStyle textStyle;
+  final Color? tabIconColor, tabSelectedColor;
+  final TextStyle? textStyle;
   final Function? onTabItemSelected;
   final String initialSelectedTab;
 
@@ -18,25 +17,20 @@ class MotionTabBar extends StatefulWidget {
   final List<IconData>? icons;
 
   MotionTabBar({
-    required this.textStyle,
-    required this.tabIconColor,
-    required this.tabSelectedColor,
+    this.textStyle,
+    this.tabIconColor = Colors.black,
+    this.tabSelectedColor = Colors.black,
     this.onTabItemSelected,
     required this.initialSelectedTab,
     required this.labels,
     this.icons,
-  })  : assert(initialSelectedTab != null),
-        assert(tabSelectedColor != null),
-        assert(tabIconColor != null),
-        assert(textStyle != null),
-        assert(labels.contains(initialSelectedTab));
+  }) : assert(labels.contains(initialSelectedTab));
 
   @override
   _MotionTabBarState createState() => _MotionTabBarState();
 }
 
-class _MotionTabBarState extends State<MotionTabBar>
-    with TickerProviderStateMixin {
+class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Tween<double> _positionTween;
   late Animation<double> _positionAnimation;
@@ -85,31 +79,28 @@ class _MotionTabBarState extends State<MotionTabBar>
 
     _positionTween = Tween<double>(begin: position, end: 1);
 
-    _positionAnimation = _positionTween.animate(
-        CurvedAnimation(parent: _animationController, curve: Curves.easeOut))
+    _positionAnimation = _positionTween.animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOut))
       ..addListener(() {
         setState(() {});
       });
 
-    _fadeFabOutAnimation = Tween<double>(begin: 1, end: 0).animate(
-        CurvedAnimation(parent: _fadeOutController, curve: Curves.easeOut))
-      ..addListener(() {
-        setState(() {
-          fabIconAlpha = _fadeFabOutAnimation.value;
-        });
-      })
-      ..addStatusListener((AnimationStatus status) {
-        if (status == AnimationStatus.completed) {
-          setState(() {
-            activeIcon = icons[selectedTab];
+    _fadeFabOutAnimation =
+        Tween<double>(begin: 1, end: 0).animate(CurvedAnimation(parent: _fadeOutController, curve: Curves.easeOut))
+          ..addListener(() {
+            setState(() {
+              fabIconAlpha = _fadeFabOutAnimation.value;
+            });
+          })
+          ..addStatusListener((AnimationStatus status) {
+            if (status == AnimationStatus.completed) {
+              setState(() {
+                activeIcon = icons[selectedTab];
+              });
+            }
           });
-        }
-      });
 
-    _fadeFabInAnimation = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(
-            parent: _animationController,
-            curve: Interval(0.8, 1, curve: Curves.easeOut)))
+    _fadeFabInAnimation = Tween<double>(begin: 0, end: 1)
+        .animate(CurvedAnimation(parent: _animationController, curve: Interval(0.8, 1, curve: Curves.easeOut)))
       ..addListener(() {
         setState(() {
           fabIconAlpha = _fadeFabInAnimation.value;
@@ -185,7 +176,7 @@ class _MotionTabBarState extends State<MotionTabBar>
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: widget.tabSelectedColor,
+                          color: widget.tabSelectedColor ?? Colors.black,
                           border: Border.all(
                             color: Colors.white,
                             width: 5,
@@ -222,9 +213,9 @@ class _MotionTabBarState extends State<MotionTabBar>
         selected: selectedTab == tabLabel,
         iconData: icon,
         title: tabLabel,
-        textStyle: widget.textStyle,
-        tabSelectedColor: widget.tabSelectedColor,
-        tabIconColor: widget.tabIconColor,
+        textStyle: widget.textStyle ?? TextStyle(color: Colors.black),
+        tabSelectedColor: widget.tabSelectedColor ?? Colors.black,
+        tabIconColor: widget.tabIconColor ?? Colors.black,
         callbackFunction: () {
           setState(() {
             activeIcon = icon;
@@ -261,8 +252,7 @@ class HalfPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Rect beforeRect = Rect.fromLTWH(0, (size.height / 2) - 10, 10, 10);
     final Rect largeRect = Rect.fromLTWH(10, 0, size.width - 20, 70);
-    final Rect afterRect =
-    Rect.fromLTWH(size.width - 10, (size.height / 2) - 10, 10, 10);
+    final Rect afterRect = Rect.fromLTWH(size.width - 10, (size.height / 2) - 10, 10, 10);
 
     final path = Path();
     path.arcTo(beforeRect, vector.radians(0), vector.radians(90), false);

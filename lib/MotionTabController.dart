@@ -3,12 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 class MotionTabController extends ChangeNotifier {
-
-  MotionTabController({required int initialIndex,this.length = 3, required TickerProvider vsync})
+  MotionTabController({required int initialIndex, this.length = 3, required TickerProvider vsync})
       : /*assert(length != null && length >= 0),*/
-        assert(initialIndex != null &&
-            initialIndex >= 0 &&
-            (length == 0 || initialIndex < length!)),
+        assert(initialIndex >= 0 && (length == 0 || initialIndex < length!)),
         _index = initialIndex,
         _previousIndex = initialIndex,
         _animationController = AnimationController.unbounded(
@@ -46,7 +43,6 @@ class MotionTabController extends ChangeNotifier {
   int? length = 3;
 
   void _changeIndex(int value, {Duration? duration, Curve? curve}) {
-    assert(value != null);
     assert(value >= 0 && (value < length! || length == 0));
     assert(duration != null || curve == null);
     assert(_indexIsChangingCount >= 0);
@@ -56,9 +52,7 @@ class MotionTabController extends ChangeNotifier {
     if (duration != null) {
       _indexIsChangingCount += 1;
       notifyListeners(); // Because the value of indexIsChanging may have changed.
-      _animationController!
-          .animateTo(_index!.toDouble(), duration: duration, curve: curve!)
-          .whenCompleteOrCancel(() {
+      _animationController!.animateTo(_index!.toDouble(), duration: duration, curve: curve!).whenCompleteOrCancel(() {
         _indexIsChangingCount -= 1;
         notifyListeners();
       });
@@ -106,8 +100,7 @@ class MotionTabController extends ChangeNotifier {
   ///
   /// While the animation is running [indexIsChanging] is true. When the
   /// animation completes [offset] will be 0.0.
-  void animateTo(int value,
-      {Duration duration = kTabScrollDuration, Curve curve = Curves.ease}) {
+  void animateTo(int value, {Duration duration = kTabScrollDuration, Curve curve = Curves.ease}) {
     _changeIndex(value, duration: duration, curve: curve);
   }
 
@@ -122,7 +115,6 @@ class MotionTabController extends ChangeNotifier {
   double get offset => _animationController!.value - _index!.toDouble();
 
   set offset(double value) {
-    assert(value != null);
     assert(value >= -1.0 && value <= 1.0);
     assert(!indexIsChanging);
     if (value == offset) return;
@@ -166,8 +158,7 @@ class DefaultMotionTabController extends StatefulWidget {
     required this.length,
     required this.initialIndex,
     required this.child,
-  })  : assert(initialIndex != null),
-        assert(length >= 0),
+  })  : assert(length >= 0),
         assert(length == 0 || (initialIndex >= 0 && initialIndex < length)),
         super(key: key);
 
@@ -197,18 +188,15 @@ class DefaultMotionTabController extends StatefulWidget {
   /// TabController controller = DefaultTabBarController.of(context);
   /// ```
   static MotionTabController? of(BuildContext context) {
-    final _TabControllerScope? scope =
-        context.dependOnInheritedWidgetOfExactType<_TabControllerScope>();
+    final _TabControllerScope? scope = context.dependOnInheritedWidgetOfExactType<_TabControllerScope>();
     return scope?.controller;
   }
 
   @override
-  _DefaultMotionTabControllerState createState() =>
-      _DefaultMotionTabControllerState();
+  _DefaultMotionTabControllerState createState() => _DefaultMotionTabControllerState();
 }
 
-class _DefaultMotionTabControllerState extends State<DefaultMotionTabController>
-    with SingleTickerProviderStateMixin {
+class _DefaultMotionTabControllerState extends State<DefaultMotionTabController> with SingleTickerProviderStateMixin {
   MotionTabController? _controller;
 
   @override

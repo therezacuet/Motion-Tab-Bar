@@ -196,7 +196,6 @@ class _TabLabelBarRenderer extends RenderFlex {
     required VerticalDirection verticalDirection,
     required this.onPerformLayout,
   })  : assert(onPerformLayout != null),
-        assert(textDirection != null),
         super(
           children: children,
           direction: direction,
@@ -225,7 +224,7 @@ class _TabLabelBarRenderer extends RenderFlex {
       child = childParentData.nextSibling;
     }
     assert(textDirection != null);
-    switch (textDirection) {
+    switch (textDirection!) {
       case TextDirection.rtl:
         xOffsets.insert(0, size.width);
         break;
@@ -432,12 +431,12 @@ class _ChangeAnimation extends Animation<double> with AnimationWithParentMixin<d
 
   @override
   void removeStatusListener(AnimationStatusListener listener) {
-    if (parent != null) super.removeStatusListener(listener);
+    super.removeStatusListener(listener);
   }
 
   @override
   void removeListener(VoidCallback listener) {
-    if (parent != null) super.removeListener(listener);
+    super.removeListener(listener);
   }
 
   @override
@@ -455,12 +454,12 @@ class _DragAnimation extends Animation<double> with AnimationWithParentMixin<dou
 
   @override
   void removeStatusListener(AnimationStatusListener listener) {
-    if (parent != null) super.removeStatusListener(listener);
+    super.removeStatusListener(listener);
   }
 
   @override
   void removeListener(VoidCallback listener) {
-    if (parent != null) super.removeListener(listener);
+    super.removeListener(listener);
   }
 
   @override
@@ -502,7 +501,6 @@ class _TabBarScrollPosition extends ScrollPositionWithSingleContext {
       // scenario, setting the actual dimension would cause a strange scroll
       // effect without this guard because the super call below would starts a
       // ballistic scroll activity.
-      assert(viewportDimension != null);
       _initialViewportDimensionWasZero = viewportDimension != 0.0;
       correctPixels(tabBar!._initialScrollOffset(viewportDimension, minScrollExtent, maxScrollExtent));
       result = false;
@@ -580,10 +578,8 @@ class TabBar extends StatefulWidget implements PreferredSizeWidget {
     this.unselectedLabelStyle,
     this.dragStartBehavior = DragStartBehavior.start,
     this.onTap,
-  })  : assert(tabs != null),
-        assert(isScrollable != null),
-        assert(dragStartBehavior != null),
-        assert(indicator != null || (indicatorWeight != null && indicatorWeight > 0.0)),
+  })  : assert(indicator != null || (indicatorWeight > 0.0)),
+        // ignore: unnecessary_null_comparison
         assert(indicator != null || (indicatorPadding != null)),
         super(key: key);
 
@@ -1096,9 +1092,7 @@ class MotionTabBarView extends StatefulWidget {
     this.controller,
     this.physics,
     this.dragStartBehavior = DragStartBehavior.start,
-  })  : assert(children != null),
-        assert(dragStartBehavior != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// This widget's selection and animation state.
   ///
@@ -1130,7 +1124,7 @@ class MotionTabBarView extends StatefulWidget {
   _TabBarViewState createState() => _TabBarViewState();
 }
 
-final PageScrollPhysics _kTabBarViewPhysics = const PageScrollPhysics().applyTo(const ClampingScrollPhysics());
+// final PageScrollPhysics _kTabBarViewPhysics = const PageScrollPhysics().applyTo(const ClampingScrollPhysics());
 
 class _TabBarViewState extends State<MotionTabBarView> {
   MotionTabController? _controller;
@@ -1299,10 +1293,7 @@ class TabPageSelectorIndicator extends StatelessWidget {
     required this.backgroundColor,
     required this.borderColor,
     required this.size,
-  })  : assert(backgroundColor != null),
-        assert(borderColor != null),
-        assert(size != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// The indicator circle's background color.
   final Color backgroundColor;
@@ -1343,7 +1334,7 @@ class TabPageSelector extends StatelessWidget {
     this.indicatorSize = 12.0,
     this.color,
     this.selectedColor,
-  })  : assert(indicatorSize != null && indicatorSize > 0.0),
+  })  : assert(indicatorSize > 0.0),
         super(key: key);
 
   /// This widget's selection and animation state.
@@ -1412,6 +1403,7 @@ class TabPageSelector extends StatelessWidget {
     final ColorTween previousColorTween = ColorTween(begin: fixSelectedColor, end: fixColor);
     final MotionTabController tabController = controller ?? DefaultMotionTabController.of(context)!;
     assert(() {
+      // ignore: unnecessary_null_comparison
       if (tabController == null) {
         throw FlutterError('No TabController for $runtimeType.\n'
             'When creating a $runtimeType, you must either provide an explicit TabController '
