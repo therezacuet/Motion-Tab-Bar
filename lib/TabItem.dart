@@ -9,21 +9,21 @@ const double ALPHA_ON = 1;
 const int ANIM_DURATION = 300;
 
 class TabItem extends StatefulWidget {
-  final String title;
+  final String? title;
   final bool selected;
-  final IconData iconData;
+  final IconData? iconData;
   final TextStyle textStyle;
   final Function callbackFunction;
   final Color tabIconColor, tabSelectedColor;
 
   TabItem({
-    @required this.title,
-    @required this.selected,
-    @required this.iconData,
-    @required this.textStyle,
-    @required this.tabIconColor,
-    @required this.tabSelectedColor,
-    @required this.callbackFunction,
+    required this.title,
+    required this.selected,
+    required this.iconData,
+    required this.textStyle,
+    required this.tabIconColor,
+    required this.tabSelectedColor,
+    required this.callbackFunction,
   });
 
   @override
@@ -70,7 +70,7 @@ class _TabItemState extends State<TabItem> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  widget.title,
+                  widget.title!,
                   style: widget.textStyle,
                 ),
               ),
