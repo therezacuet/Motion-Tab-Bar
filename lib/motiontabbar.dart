@@ -9,7 +9,7 @@ typedef MotionTabBuilder = Widget Function();
 
 class MotionTabBar extends StatefulWidget {
   final Color? tabIconColor, tabIconSelectedColor, tabSelectedColor, tabBarColor;
-  final double? tabIconSize, tabIconSelectedSize;
+  final double? tabIconSize, tabIconSelectedSize, tabBarHeight, tabSize;
   final TextStyle? textStyle;
   final Function? onTabItemSelected;
   final String initialSelectedTab;
@@ -25,6 +25,8 @@ class MotionTabBar extends StatefulWidget {
     this.tabIconSelectedSize = 24,
     this.tabSelectedColor = Colors.black,
     this.tabBarColor = Colors.white,
+    this.tabBarHeight = 65,
+    this.tabSize = 60,
     this.onTabItemSelected,
     required this.initialSelectedTab,
     required this.labels,
@@ -119,7 +121,7 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
       alignment: Alignment.topCenter,
       children: <Widget>[
         Container(
-          height: 65,
+          height: widget.tabBarHeight,
           //margin: EdgeInsets.only(top: 45),
           decoration: BoxDecoration(
             color: widget.tabBarColor,
@@ -149,17 +151,17 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
                   alignment: Alignment.center,
                   children: <Widget>[
                     SizedBox(
-                      height: 90,
-                      width: 90,
+                      height: widget.tabSize! + 30,
+                      width: widget.tabSize! + 30,
                       child: ClipRect(
                         clipper: HalfClipper(),
                         child: Container(
                           child: Center(
                             child: Container(
-                              width: 70,
-                              height: 70,
+                              width: widget.tabSize! + 10,
+                              height: widget.tabSize! + 10,
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: widget.tabBarColor,
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
@@ -174,22 +176,17 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
                       ),
                     ),
                     SizedBox(
-                      height: 70,
-                      width: 90,
+                      height: widget.tabSize! + 10,
+                      width: widget.tabSize! + 30,
                       child: CustomPaint(painter: HalfPainter(color: widget.tabBarColor)),
                     ),
                     SizedBox(
-                      height: 60,
-                      width: 60,
+                      height: widget.tabSize,
+                      width: widget.tabSize,
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: widget.tabSelectedColor,
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 5,
-                            style: BorderStyle.none,
-                          ),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(0.0),

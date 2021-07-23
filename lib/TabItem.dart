@@ -65,15 +65,19 @@ class _TabItemState extends State<TabItem> {
           Container(
             height: double.infinity,
             width: double.infinity,
+            alignment: Alignment.center,
             child: AnimatedAlign(
               duration: Duration(milliseconds: ANIM_DURATION),
               alignment: Alignment(0, textYAlign),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  widget.title!,
-                  style: widget.textStyle,
-                ),
+                child: widget.selected
+                    ? Text(
+                        widget.title!,
+                        style: widget.textStyle,
+                        textAlign: TextAlign.center,
+                      )
+                    : Text(''),
               ),
             ),
           ),
