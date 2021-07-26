@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:motion_tab_bar/MotionTabBarView.dart';
 import 'package:motion_tab_bar/MotionTabController.dart';
 import 'package:motion_tab_bar/motiontabbar.dart';
+import 'package:motion_tab_bar/badge.widget.dart';
 
 void main() => runApp(const MyApp());
 
@@ -36,7 +37,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = MotionTabController(initialIndex: 1, vsync: this);
+    _tabController = MotionTabController(
+      initialIndex: 1,
+      length: 4,
+      vsync: this,
+    );
   }
 
   @override
@@ -53,8 +58,42 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       ),
       bottomNavigationBar: MotionTabBar(
         initialSelectedTab: "Home",
-        labels: const ["Dashboard", "Home", "Profile"],
-        icons: const [Icons.dashboard, Icons.home, Icons.people_alt],
+        labels: const ["Dashboard", "Home", "Profile", "Settings"],
+        icons: const [Icons.dashboard, Icons.home, Icons.people_alt, Icons.settings],
+
+        // optional badges, length must be same with labels
+        badges: [
+          // Default Motion Badge Widget
+          const MotionBadgeWidget(
+            text: '99+',
+            textColor: Colors.white, // optional, default to Colors.white
+            color: Colors.red, // optional, default to Colors.red
+            size: 18, // optional, default to 18
+          ),
+
+          // custom badge Widget
+          Container(
+            color: Colors.black,
+            padding: const EdgeInsets.all(2),
+            child: const Text(
+              '48',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+              ),
+            ),
+          ),
+
+          // allow null
+          null,
+
+          // Default Motion Badge Widget with indicator only
+          const MotionBadgeWidget(
+            isIndicator: true,
+            color: Colors.red, // optional, default to Colors.red
+            size: 5, // optional, default to 5,
+          ),
+        ],
         tabSize: 50,
         tabBarHeight: 55,
         textStyle: const TextStyle(
@@ -88,6 +127,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           ),
           const Center(
             child: Text("Profile"),
+          ),
+          const Center(
+            child: Text("Settings"),
           ),
         ],
       ),
