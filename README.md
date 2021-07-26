@@ -12,7 +12,7 @@ Add the plugin:
 
 ```yaml
 dependencies:
-  motion_tab_bar: ^0.2.0
+  motion_tab_bar: ^0.2.1
 ```
 
 ## Basic Usage
@@ -71,7 +71,6 @@ Adding the widget
         size: 5, // optional, default to 5,
       ),
     ],
-
     tabSize: 50,
     tabBarHeight: 55,
     textStyle: const TextStyle(
@@ -80,19 +79,19 @@ Adding the widget
       fontWeight: FontWeight.w500,
     ),
     tabIconColor: Colors.blue[600],
-        tabIconSize: 28.0,
-        tabIconSelectedSize: 26.0,
-        tabSelectedColor: Colors.blue[900],
-        tabIconSelectedColor: Colors.white,
-        tabBarColor: const Color(0xFFAFAFAF),
-        onTabItemSelected: (int value) {
-          // ignore: avoid_print
-          print(value);
-          setState(() {
-            _tabController!.index = value;
-          });
-        },
-      ),
+    tabIconSize: 28.0,
+    tabIconSelectedSize: 26.0,
+    tabSelectedColor: Colors.blue[900],
+    tabIconSelectedColor: Colors.white,
+    tabBarColor: const Color(0xFFAFAFAF),
+    onTabItemSelected: (int value) {
+      // ignore: avoid_print
+      print(value);
+      setState(() {
+        _tabController!.index = value;
+      });
+    },
+  )
 
 ```
 
