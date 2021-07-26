@@ -16,6 +16,7 @@ class TabItem extends StatefulWidget {
   final Function callbackFunction;
   final Color tabIconColor;
   final double? tabIconSize;
+  final Widget? badge;
 
   TabItem({
     required this.title,
@@ -25,6 +26,7 @@ class TabItem extends StatefulWidget {
     required this.tabIconColor,
     required this.callbackFunction,
     this.tabIconSize = 24,
+    this.badge,
   });
 
   @override
@@ -91,19 +93,31 @@ class _TabItemState extends State<TabItem> {
               child: AnimatedOpacity(
                 duration: Duration(milliseconds: ANIM_DURATION),
                 opacity: iconAlpha,
-                child: IconButton(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  padding: EdgeInsets.all(0),
-                  alignment: Alignment(0, 0),
-                  icon: Icon(
-                    widget.iconData,
-                    color: widget.tabIconColor,
-                    size: widget.tabIconSize,
-                  ),
-                  onPressed: () {
-                    widget.callbackFunction();
-                  },
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    IconButton(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      padding: EdgeInsets.all(0),
+                      alignment: Alignment(0, 0),
+                      icon: Icon(
+                        widget.iconData,
+                        color: widget.tabIconColor,
+                        size: widget.tabIconSize,
+                      ),
+                      onPressed: () {
+                        widget.callbackFunction();
+                      },
+                    ),
+                    widget.badge != null
+                        ? Positioned(
+                            top: 0,
+                            right: 0,
+                            child: widget.badge!,
+                          )
+                        : Container(),
+                  ],
                 ),
               ),
             ),

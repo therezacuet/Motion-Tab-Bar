@@ -3,7 +3,6 @@ library motiontabbar;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'TabItem.dart';
-import 'package:vector_math/vector_math.dart' as vector;
 
 typedef MotionTabBuilder = Widget Function();
 
@@ -16,6 +15,9 @@ class MotionTabBar extends StatefulWidget {
 
   final List<String?> labels;
   final List<IconData>? icons;
+
+  // badge
+  final List<Widget?>? badges;
 
   MotionTabBar({
     this.textStyle,
@@ -31,7 +33,10 @@ class MotionTabBar extends StatefulWidget {
     required this.initialSelectedTab,
     required this.labels,
     this.icons,
-  }) : assert(labels.contains(initialSelectedTab));
+    this.badges,
+  })  : assert(labels.contains(initialSelectedTab)),
+        assert(icons != null && icons.length == labels.length),
+        assert((badges != null && badges.length > 0) ? badges.length == labels.length : true);
 
   @override
   _MotionTabBarState createState() => _MotionTabBarState();
@@ -43,7 +48,7 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
   late Animation<double> _positionAnimation;
 
   late AnimationController _fadeOutController;
-  late Animation<double> _fadeFabOutAnimation;
+  // late Animation<double> _fadeFabOutAnimation;
   late Animation<double> _fadeFabInAnimation;
 
   late List<String?> labels;
@@ -60,6 +65,11 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
   IconData? activeIcon;
   String? selectedTab;
 
+  // badges
+  // late Map<String?, Widget> badges;
+  List<Widget>? badges;
+  Widget? activeBadge;
+
   @override
   void initState() {
     super.initState();
@@ -73,6 +83,10 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
 
     selectedTab = widget.initialSelectedTab;
     activeIcon = icons[selectedTab];
+
+    // init badge text
+    int selectedIndex = labels.indexWhere((element) => element == widget.initialSelectedTab);
+    activeBadge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
 
     _animationController = AnimationController(
       duration: Duration(milliseconds: ANIM_DURATION),
@@ -91,20 +105,21 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
         setState(() {});
       });
 
-    _fadeFabOutAnimation =
-        Tween<double>(begin: 1, end: 0).animate(CurvedAnimation(parent: _fadeOutController, curve: Curves.easeOut))
-          ..addListener(() {
-            setState(() {
-              fabIconAlpha = _fadeFabOutAnimation.value;
-            });
-          })
-          ..addStatusListener((AnimationStatus status) {
-            if (status == AnimationStatus.completed) {
-              setState(() {
-                activeIcon = icons[selectedTab];
-              });
-            }
-          });
+    // _fadeFabOutAnimation =
+    //     Tween<double>(begin: 1, end: 0).animate(CurvedAnimation(parent: _fadeOutController, curve: Curves.easeOut))
+    //       ..addListener(() {
+    //         setState(() {
+    //           fabIconAlpha = _fadeFabOutAnimation.value;
+    //         });
+    //       })
+    //       ..addStatusListener((AnimationStatus status) {
+    //         if (status == AnimationStatus.completed) {
+    //           setState(() {
+    //             activeIcon = icons[selectedTab];
+    //             activeBadge = badges[selectedTab];
+    //           });
+    //         }
+    //       });
 
     _fadeFabInAnimation = Tween<double>(begin: 0, end: 1)
         .animate(CurvedAnimation(parent: _animationController, curve: Interval(0.8, 1, curve: Curves.easeOut)))
@@ -192,10 +207,22 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
                           padding: const EdgeInsets.all(0.0),
                           child: Opacity(
                             opacity: fabIconAlpha,
-                            child: Icon(
-                              activeIcon,
-                              color: widget.tabIconSelectedColor,
-                              size: widget.tabIconSelectedSize,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Icon(
+                                  activeIcon,
+                                  color: widget.tabIconSelectedColor,
+                                  size: widget.tabIconSelectedSize,
+                                ),
+                                activeBadge != null
+                                    ? Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: activeBadge!,
+                                      )
+                                    : Container(),
+                              ],
                             ),
                           ),
                         ),
@@ -215,6 +242,9 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
     return labels.map((tabLabel) {
       IconData? icon = icons[tabLabel];
 
+      int selectedIndex = labels.indexWhere((element) => element == tabLabel);
+      Widget? badge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
+
       return TabItem(
         selected: selectedTab == tabLabel,
         iconData: icon,
@@ -222,9 +252,11 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
         textStyle: widget.textStyle ?? TextStyle(color: Colors.black),
         tabIconColor: widget.tabIconColor ?? Colors.black,
         tabIconSize: widget.tabIconSize,
+        badge: badge,
         callbackFunction: () {
           setState(() {
             activeIcon = icon;
+            activeBadge = badge;
             selectedTab = tabLabel;
             widget.onTabItemSelected!(index);
           });
