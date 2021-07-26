@@ -1,4 +1,4 @@
-# Motion Tab Bar
+# Motion Tab Bar v2, with null-safety support
 
 A beautiful animated widget for your Flutter apps
 
