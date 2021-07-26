@@ -4,14 +4,20 @@ A beautiful animated widget for your Flutter apps
 
 **Preview:**
 
-|![MotionTabBar Gif](https://github.com/therezacuet/Motion-Tab-Bar/blob/master/motiontabbar.gif?raw=true) |
+### v0.2.x Screenshot
+![0.2.1 Screenshot](https://github.com/kimmanwky/Motion-Tab-Bar/blob/master/screenshot2.png?raw=true)  
+
+### v0.1.x Preview (animatation)
+![MotionTabBar Gif](https://github.com/therezacuet/Motion-Tab-Bar/blob/master/motiontabbar.gif?raw=true)
+
+<br>
 
 ## Getting Started
 
 Add the plugin:
 
 ```yaml
-dependencies:
+dependencies:~
   motion_tab_bar: ^0.2.1
 ```
 
