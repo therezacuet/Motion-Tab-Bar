@@ -1,15 +1,15 @@
 name: motion_tab_bar
 description: An animated Bottom Navigation Bar for Flutter apps, icon animates into place, colors are customizable.
-version: 0.1.5
+version: 2.0.0
 homepage: https://github.com/therezacuet/Motion-Tab-Bar
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: '>=2.12.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  vector_math: ^2.0.8
+  vector_math: ^2.1.0
 
 dev_dependencies:
   flutter_test:
