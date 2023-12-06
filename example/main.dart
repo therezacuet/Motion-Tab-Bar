@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         tabIconSelectedSize: 26.0,
         tabSelectedColor: Colors.blue[900],
         tabIconSelectedColor: Colors.white,
-        tabBarColor: const Color(0xFFAFAFAF),
+        tabBarColor: Colors.white,
         onTabItemSelected: (int value) {
           setState(() {
             _motionTabBarController!.index = value;
