@@ -7,9 +7,9 @@
 
 A beautiful animated widget for your Flutter apps
 
-|![MotionTabBar Gif](https://github.com/therezacuet/Motion-Tab-Bar/blob/master/motiontabbar.gif?raw=true) |
-|![MotionTabBar Gif](https://github.com/therezacuet/Motion-Tab-Bar/blob/master/motiontabbar_v2.gif?raw=true) |
-|![MotionTabBar Gif](https://github.com/therezacuet/Motion-Tab-Bar/blob/master/motiontabbar_v2.1.gif?raw=true) |
+Initial Version | Without Badge  | With Badge |
+| ------------- | ------------- | ------------- |
+| ![MotionTabBar Gif](https://github.com/therezacuet/Motion-Tab-Bar/blob/master/motiontabbar.gif?raw=true) | ![MotionTabBar Gif](https://github.com/therezacuet/Motion-Tab-Bar/blob/master/motiontabbar_v2.gif?raw=true)  | ![MotionTabBar Gif](https://github.com/therezacuet/Motion-Tab-Bar/blob/master/motiontabbar_v2.1.gif?raw=true)  |
 
 ## Getting Started
 
