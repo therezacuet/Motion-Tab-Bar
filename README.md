@@ -17,7 +17,7 @@ Add the plugin:
 
 ```yaml
 dependencies:
-  motion_tab_bar: ^2.0.1
+  motion_tab_bar: ^2.0.2
 ```
 
 ## Basic Usage
