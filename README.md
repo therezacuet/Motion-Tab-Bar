@@ -1,4 +1,4 @@
-# Motion Tab Bar compatible with Flutter 3
+# Motion Tab Bar compatible with Flutter 3 and RTL support
 
 [![pub package](https://img.shields.io/pub/v/motion_tab_bar)](https://pub.dev/packages/motion_tab_bar)
 [![likes](https://img.shields.io/pub/likes/motion_tab_bar)](https://pub.dev/packages/motion_tab_bar/score)
@@ -19,7 +19,7 @@ Add the plugin:
 
 ```yaml
 dependencies:
-  motion_tab_bar: ^2.0.2
+  motion_tab_bar: ^2.0.3
 ```
 
 ## Basic Usage

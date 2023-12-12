@@ -62,10 +62,6 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
 
   get tabAmount => icons.keys.length;
   get index => labels.indexOf(selectedTab);
-  get position {
-    double pace = 2 / (labels.length - 1);
-    return (pace * index) - 1;
-  }
 
   double fabIconAlpha = 1;
   IconData? activeIcon;
@@ -74,76 +70,89 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
   List<Widget>? badges;
   Widget? activeBadge;
 
+  double getPosition(bool isRTL) {
+    double pace = 2 / (labels.length - 1);
+    double position = (pace * index) - 1;
+
+    if (isRTL) {
+      // If RTL, reverse the position calculation
+      position = 1 - (pace * index);
+    }
+
+    return position;
+  }
+
   @override
   void initState() {
     super.initState();
 
-    if(widget.controller != null) {
-      widget.controller!.onTabChange= (index) {
-        setState(() {
-          activeIcon = widget.icons![index];
-          selectedTab = widget.labels[index];
-        });
-        _initAnimationAndStart(_positionAnimation.value, position);
-      };
-    }
-
-    labels = widget.labels;
-    icons = Map.fromIterable(
-      labels,
-      key: (label) => label,
-      value: (label) => widget.icons![labels.indexOf(label)],
-    );
-
-    selectedTab = widget.initialSelectedTab;
-    activeIcon = icons[selectedTab];
-
-    // init badge text
-    int selectedIndex = labels.indexWhere((element) => element == widget.initialSelectedTab);
-    activeBadge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
-
-    _animationController = AnimationController(
-      duration: Duration(milliseconds: ANIM_DURATION),
-      vsync: this,
-    );
-
-    _fadeOutController = AnimationController(
-      duration: Duration(milliseconds: (ANIM_DURATION ~/ 5)),
-      vsync: this,
-    );
-
-    _positionTween = Tween<double>(begin: position, end: 1);
-
-    _positionAnimation = _positionTween.animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOut))
-      ..addListener(() {
-        setState(() {});
-      });
-
-    _fadeFabOutAnimation = Tween<double>(begin: 1, end: 0)
-        .animate(CurvedAnimation(parent: _fadeOutController, curve: Curves.easeOut))
-      ..addListener(() {
-        setState(() {
-          fabIconAlpha = _fadeFabOutAnimation.value;
-        });
-      })
-      ..addStatusListener((AnimationStatus status) {
-        if (status == AnimationStatus.completed) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      bool isRtl = Directionality.of(context).index == 0;
+      if(widget.controller != null) {
+        widget.controller!.onTabChange= (index) {
           setState(() {
-            activeIcon = icons[selectedTab];
-
-            int selectedIndex = labels.indexWhere((element) => element == selectedTab);
-            activeBadge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
+            activeIcon = widget.icons![index];
+            selectedTab = widget.labels[index];
           });
-        }
-      });
+          _initAnimationAndStart(_positionAnimation.value, getPosition(isRtl));
+        };
+      }
+      labels = widget.labels;
+      icons = Map.fromIterable(
+        labels,
+        key: (label) => label,
+        value: (label) => widget.icons![labels.indexOf(label)],
+      );
 
-    _fadeFabInAnimation = Tween<double>(begin: 0, end: 1)
-        .animate(CurvedAnimation(parent: _animationController, curve: Interval(0.8, 1, curve: Curves.easeOut)))
-      ..addListener(() {
-        setState(() {
-          fabIconAlpha = _fadeFabInAnimation.value;
+      selectedTab = widget.initialSelectedTab;
+      activeIcon = icons[selectedTab];
+
+      // init badge text
+      int selectedIndex = labels.indexWhere((element) => element == widget.initialSelectedTab);
+      activeBadge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
+
+      _animationController = AnimationController(
+        duration: Duration(milliseconds: ANIM_DURATION),
+        vsync: this,
+      );
+
+      _fadeOutController = AnimationController(
+        duration: Duration(milliseconds: (ANIM_DURATION ~/ 5)),
+        vsync: this,
+      );
+
+      _positionTween = Tween<double>(begin: getPosition(isRtl), end: 1);
+
+      _positionAnimation = _positionTween.animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOut))
+        ..addListener(() {
+          setState(() {});
         });
-      });
+
+      _fadeFabOutAnimation = Tween<double>(begin: 1, end: 0)
+          .animate(CurvedAnimation(parent: _fadeOutController, curve: Curves.easeOut))
+        ..addListener(() {
+          setState(() {
+            fabIconAlpha = _fadeFabOutAnimation.value;
+          });
+        })
+        ..addStatusListener((AnimationStatus status) {
+          if (status == AnimationStatus.completed) {
+            setState(() {
+              activeIcon = icons[selectedTab];
+              int selectedIndex = labels.indexWhere((element) => element == selectedTab);
+              activeBadge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
+            });
+          }
+        });
+
+      _fadeFabInAnimation = Tween<double>(begin: 0, end: 1)
+          .animate(CurvedAnimation(parent: _animationController, curve: Interval(0.8, 1, curve: Curves.easeOut)))
+        ..addListener(() {
+          setState(() {
+            fabIconAlpha = _fadeFabInAnimation.value;
+          });
+        });
+    });
   }
 
   @override
@@ -262,6 +271,7 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
   }
 
   List<Widget> generateTabItems() {
+    bool isRtl = Directionality.of(context).index == 0;
     return labels.map((tabLabel) {
       IconData? icon = icons[tabLabel];
 
@@ -282,7 +292,7 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
             selectedTab = tabLabel;
             widget.onTabItemSelected!(index);
           });
-          _initAnimationAndStart(_positionAnimation.value, position);
+          _initAnimationAndStart(_positionAnimation.value, getPosition(isRtl));
         },
       );
     }).toList();
