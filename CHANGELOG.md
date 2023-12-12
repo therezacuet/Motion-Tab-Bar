@@ -1,23 +1,33 @@
-## [0.1.5] - 07-07-2020.
+## [2.0.3]
+
+* Support RTL
+
+## [2.0.2]
+
+* Fully compatible with the latest Flutter 3, ensuring a seamless development experience.
+* Addressed and squashed pesky bugs to enhance overall stability.
+* Added exciting features like badge support and improved customization options.
+
+## [0.1.5]
 
 * Remove extra space from top of tab bar.
 
-## [0.1.4] - 01-07-2020.
+## [0.1.4]
 
 * Tab Item Dynamic. Now you can use multiple tab.
 * Tab Item Animation Delay fix
 
-## [0.1.3] - 23-06-2020.
+## [0.1.3]
 
 * Controller Issue fix.
 * Tab Item Animation Delay fix
 
-## [0.1.2] - 15-06-2020.
+## [0.1.2]
 
 * Fix Initial Index Issue.
 * Fix Initial Tab Selected Issue.
 
-## [0.1.0] - 07-06-2020.
+## [0.1.0]
 
 * Initial release.
 * Tab menu with interaction design.
