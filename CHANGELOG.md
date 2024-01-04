@@ -1,3 +1,7 @@
+## [2.0.4]
+
+* Fix flutter run time issue
+
 ## [2.0.3]
 
 * Support RTL
