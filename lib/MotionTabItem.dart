@@ -17,8 +17,8 @@ class MotionTabItem extends StatefulWidget {
   final Color tabIconColor;
   final double? tabIconSize;
   final Widget? badge;
-
   MotionTabItem({
+    GlobalKey? key,
     required this.title,
     required this.selected,
     required this.iconData,
@@ -27,7 +27,7 @@ class MotionTabItem extends StatefulWidget {
     required this.callbackFunction,
     this.tabIconSize = 24,
     this.badge,
-  });
+  }) : super(key:key);
 
   @override
   _MotionTabItemState createState() => _MotionTabItemState();

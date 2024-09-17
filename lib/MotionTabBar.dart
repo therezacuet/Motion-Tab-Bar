@@ -17,6 +17,7 @@ class MotionTabBar extends StatefulWidget {
 
   final List<String?> labels;
   final List<IconData>? icons;
+  final List<GlobalKey>? buttonKeys;
   final bool useSafeArea;
   final MotionTabBarController? controller;
 
@@ -40,9 +41,11 @@ class MotionTabBar extends StatefulWidget {
     this.useSafeArea = true,
     this.badges,
     this.controller,
+    this.buttonKeys,
   })  : assert(labels.contains(initialSelectedTab)),
         assert(icons != null && icons.length == labels.length),
-        assert((badges != null && badges.length > 0) ? badges.length == labels.length : true);
+        assert((badges != null && badges.length > 0) ? badges.length == labels.length : true),
+        assert((buttonKeys != null && buttonKeys.length > 0) ? buttonKeys.length == labels.length : true);
 
   @override
   _MotionTabBarState createState() => _MotionTabBarState();
@@ -59,6 +62,7 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
 
   late List<String?> labels;
   late Map<String?, IconData> icons;
+  late Map<String?, GlobalKey> buttonGlobalKeys;
 
   get tabAmount => icons.keys.length;
   get index => labels.indexOf(selectedTab);
@@ -106,7 +110,15 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
       key: (label) => label,
       value: (label) => widget.icons![labels.indexOf(label)],
     );
-
+    if(widget.buttonKeys!=null && widget.buttonKeys!.isNotEmpty) {
+      buttonGlobalKeys = Map.fromIterable(
+        labels,
+        key: (label) => label,
+        value: (label) => widget.buttonKeys![labels.indexOf(label)],
+      );
+    }else{
+      buttonGlobalKeys = {};
+    }
     selectedTab = widget.initialSelectedTab;
     activeIcon = icons[selectedTab];
 
@@ -276,11 +288,13 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
     bool isRtl = Directionality.of(context).index == 0;
     return labels.map((tabLabel) {
       IconData? icon = icons[tabLabel];
+      GlobalKey? buttonKey = buttonGlobalKeys.isEmpty ? null : buttonGlobalKeys[tabLabel];
 
       int selectedIndex = labels.indexWhere((element) => element == tabLabel);
       Widget? badge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
 
       return MotionTabItem(
+        key: buttonKey,
         selected: selectedTab == tabLabel,
         iconData: icon,
         title: tabLabel,
