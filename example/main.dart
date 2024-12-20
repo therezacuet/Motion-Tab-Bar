@@ -65,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         title: Text(widget.title!),
       ),
       bottomNavigationBar: MotionTabBar(
+        isArabic: true,
         controller: _motionTabBarController, // Add this controller if you need to change your tab programmatically
         initialSelectedTab: "Home",
         useSafeArea: true, // default: true, apply safe area wrapper

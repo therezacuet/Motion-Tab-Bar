@@ -9,12 +9,15 @@ import 'helpers/HalfPainter.dart';
 typedef MotionTabBuilder = Widget Function();
 
 class MotionTabBar extends StatefulWidget {
-  final Color? tabIconColor, tabIconSelectedColor, tabSelectedColor, tabBarColor;
+  final Color? tabIconColor,
+      tabIconSelectedColor,
+      tabSelectedColor,
+      tabBarColor;
   final double? tabIconSize, tabIconSelectedSize, tabBarHeight, tabSize;
   final TextStyle? textStyle;
   final Function? onTabItemSelected;
   final String initialSelectedTab;
-
+  bool isArabic;
   final List<String?> labels;
   final List<IconData>? icons;
   final bool useSafeArea;
@@ -24,6 +27,7 @@ class MotionTabBar extends StatefulWidget {
   final List<Widget?>? badges;
 
   MotionTabBar({
+    required this.isArabic,
     this.textStyle,
     this.tabIconColor = Colors.black,
     this.tabIconSize = 24,
@@ -42,13 +46,16 @@ class MotionTabBar extends StatefulWidget {
     this.controller,
   })  : assert(labels.contains(initialSelectedTab)),
         assert(icons != null && icons.length == labels.length),
-        assert((badges != null && badges.length > 0) ? badges.length == labels.length : true);
+        assert((badges != null && badges.length > 0)
+            ? badges.length == labels.length
+            : true);
 
   @override
   _MotionTabBarState createState() => _MotionTabBarState();
 }
 
-class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMixin {
+class _MotionTabBarState extends State<MotionTabBar>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Tween<double> _positionTween;
   late Animation<double> _positionAnimation;
@@ -67,15 +74,15 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
   IconData? activeIcon;
   String? selectedTab;
 
-  bool isRtl = false;
   List<Widget>? badges;
   Widget? activeBadge;
 
-  double getPosition(bool isRTL) {
+  double getPosition(bool isArabic) {
+    print("print IrL in get position ${isArabic}");
     double pace = 2 / (labels.length - 1);
     double position = (pace * index) - 1;
 
-    if (isRTL) {
+    if (isArabic) {
       // If RTL, reverse the position calculation
       position = 1 - (pace * index);
     }
@@ -88,16 +95,19 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      isRtl = Directionality.of(context).index == 0;
+      widget.isArabic = Directionality.of(context).index == 0;
+      print("print the dir${widget.isArabic}");
+      //Directionality.of(context) == TextDirection.rtl;
     });
 
-    if(widget.controller != null) {
-      widget.controller!.onTabChange= (index) {
+    if (widget.controller != null) {
+      widget.controller!.onTabChange = (index) {
         setState(() {
           activeIcon = widget.icons![index];
           selectedTab = widget.labels[index];
         });
-        _initAnimationAndStart(_positionAnimation.value, getPosition(isRtl));
+        _initAnimationAndStart(
+            _positionAnimation.value, getPosition(widget.isArabic));
       };
     }
     labels = widget.labels;
@@ -111,8 +121,11 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
     activeIcon = icons[selectedTab];
 
     // init badge text
-    int selectedIndex = labels.indexWhere((element) => element == widget.initialSelectedTab);
-    activeBadge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
+    int selectedIndex =
+        labels.indexWhere((element) => element == widget.initialSelectedTab);
+    activeBadge = (widget.badges != null && widget.badges!.length > 0)
+        ? widget.badges![selectedIndex]
+        : null;
 
     _animationController = AnimationController(
       duration: Duration(milliseconds: ANIM_DURATION),
@@ -124,15 +137,15 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
       vsync: this,
     );
 
-    _positionTween = Tween<double>(begin: getPosition(isRtl), end: 1);
-
-    _positionAnimation = _positionTween.animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOut))
+    _positionTween = Tween<double>(begin: getPosition(widget.isArabic), end: 1);
+    _positionAnimation = _positionTween.animate(
+        CurvedAnimation(parent: _animationController, curve: Curves.easeOut))
       ..addListener(() {
         setState(() {});
       });
 
-    _fadeFabOutAnimation = Tween<double>(begin: 1, end: 0)
-        .animate(CurvedAnimation(parent: _fadeOutController, curve: Curves.easeOut))
+    _fadeFabOutAnimation = Tween<double>(begin: 1, end: 0).animate(
+        CurvedAnimation(parent: _fadeOutController, curve: Curves.easeOut))
       ..addListener(() {
         setState(() {
           fabIconAlpha = _fadeFabOutAnimation.value;
@@ -142,14 +155,19 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
         if (status == AnimationStatus.completed) {
           setState(() {
             activeIcon = icons[selectedTab];
-            int selectedIndex = labels.indexWhere((element) => element == selectedTab);
-            activeBadge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
+            int selectedIndex =
+                labels.indexWhere((element) => element == selectedTab);
+            activeBadge = (widget.badges != null && widget.badges!.length > 0)
+                ? widget.badges![selectedIndex]
+                : null;
           });
         }
       });
 
-    _fadeFabInAnimation = Tween<double>(begin: 0, end: 1)
-        .animate(CurvedAnimation(parent: _animationController, curve: Interval(0.8, 1, curve: Curves.easeOut)))
+    _fadeFabInAnimation = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(
+            parent: _animationController,
+            curve: Interval(0.8, 1, curve: Curves.easeOut)))
       ..addListener(() {
         setState(() {
           fabIconAlpha = _fadeFabInAnimation.value;
@@ -225,7 +243,8 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
                         SizedBox(
                           height: widget.tabSize! + 15,
                           width: widget.tabSize! + 35,
-                          child: CustomPaint(painter: HalfPainter(color: widget.tabBarColor)),
+                          child: CustomPaint(
+                              painter: HalfPainter(color: widget.tabBarColor)),
                         ),
                         SizedBox(
                           height: widget.tabSize,
@@ -249,10 +268,10 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
                                     ),
                                     activeBadge != null
                                         ? Positioned(
-                                      top: 0,
-                                      right: 0,
-                                      child: activeBadge!,
-                                    )
+                                            top: 0,
+                                            right: 0,
+                                            child: activeBadge!,
+                                          )
                                         : SizedBox(),
                                   ],
                                 ),
@@ -273,12 +292,13 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
   }
 
   List<Widget> generateTabItems() {
-    bool isRtl = Directionality.of(context).index == 0;
+    bool isArabic = Directionality.of(context).index == 0;
     return labels.map((tabLabel) {
       IconData? icon = icons[tabLabel];
-
       int selectedIndex = labels.indexWhere((element) => element == tabLabel);
-      Widget? badge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
+      Widget? badge = (widget.badges != null && widget.badges!.length > 0)
+          ? widget.badges![selectedIndex]
+          : null;
 
       return MotionTabItem(
         selected: selectedTab == tabLabel,
@@ -294,7 +314,8 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
             selectedTab = tabLabel;
             widget.onTabItemSelected!(index);
           });
-          _initAnimationAndStart(_positionAnimation.value, getPosition(isRtl));
+          _initAnimationAndStart(
+              _positionAnimation.value, getPosition(isArabic));
         },
       );
     }).toList();
