@@ -16,7 +16,8 @@ class MotionTabBar extends StatefulWidget {
   final String initialSelectedTab;
 
   final List<String?> labels;
-  final List<IconData>? icons;
+  final List<Widget>? icons;
+  final List<Widget>? inActiveicons;
   final bool useSafeArea;
   final MotionTabBarController? controller;
 
@@ -37,6 +38,7 @@ class MotionTabBar extends StatefulWidget {
     required this.initialSelectedTab,
     required this.labels,
     this.icons,
+    this.inActiveicons,
     this.useSafeArea = true,
     this.badges,
     this.controller,
@@ -58,13 +60,13 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
   late Animation<double> _fadeFabInAnimation;
 
   late List<String?> labels;
-  late Map<String?, IconData> icons;
+  late Map<String?, Widget> icons;
 
   get tabAmount => icons.keys.length;
   get index => labels.indexOf(selectedTab);
 
   double fabIconAlpha = 1;
-  IconData? activeIcon;
+  Widget? activeIcon;
   String? selectedTab;
 
   bool isRtl = false;
@@ -242,11 +244,7 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
                                 child: Stack(
                                   alignment: Alignment.center,
                                   children: [
-                                    Icon(
-                                      activeIcon,
-                                      color: widget.tabIconSelectedColor,
-                                      size: widget.tabIconSelectedSize,
-                                    ),
+                                    activeIcon ?? SizedBox(),
                                     activeBadge != null
                                         ? Positioned(
                                       top: 0,
@@ -275,14 +273,14 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
   List<Widget> generateTabItems() {
     bool isRtl = Directionality.of(context).index == 0;
     return labels.map((tabLabel) {
-      IconData? icon = icons[tabLabel];
+      Widget? icon = icons[tabLabel];
 
       int selectedIndex = labels.indexWhere((element) => element == tabLabel);
       Widget? badge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
 
       return MotionTabItem(
         selected: selectedTab == tabLabel,
-        iconData: icon,
+        iconData: selectedTab == tabLabel ? icon : widget.inActiveicons![selectedIndex]  ?? SizedBox(),
         title: tabLabel,
         textStyle: widget.textStyle ?? TextStyle(color: Colors.black),
         tabIconColor: widget.tabIconColor ?? Colors.black,
