@@ -9,10 +9,20 @@ import 'helpers/HalfPainter.dart';
 typedef MotionTabBuilder = Widget Function();
 
 class MotionTabBar extends StatefulWidget {
-  final Color? tabIconColor, tabIconSelectedColor, tabSelectedColor, tabBarColor;
+  final Color? tabIconColor,
+      tabIconSelectedColor,
+      tabSelectedColor,
+      tabBarColor;
   final double? tabIconSize, tabIconSelectedSize, tabBarHeight, tabSize;
   final TextStyle? textStyle;
   final Function? onTabItemSelected;
+
+  /// Called before changing the selected tab.
+  ///
+  /// Return `false` to prevent the selected tab from changing.
+  ///
+  /// If null, all tab changes are allowed.
+  final bool Function(int index)? onTabWillChange;
   final String initialSelectedTab;
 
   final List<String?> labels;
@@ -34,6 +44,7 @@ class MotionTabBar extends StatefulWidget {
     this.tabBarHeight = 65,
     this.tabSize = 60,
     this.onTabItemSelected,
+    this.onTabWillChange,
     required this.initialSelectedTab,
     required this.labels,
     this.icons,
@@ -42,13 +53,16 @@ class MotionTabBar extends StatefulWidget {
     this.controller,
   })  : assert(labels.contains(initialSelectedTab)),
         assert(icons != null && icons.length == labels.length),
-        assert((badges != null && badges.length > 0) ? badges.length == labels.length : true);
+        assert((badges != null && badges.length > 0)
+            ? badges.length == labels.length
+            : true);
 
   @override
   _MotionTabBarState createState() => _MotionTabBarState();
 }
 
-class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMixin {
+class _MotionTabBarState extends State<MotionTabBar>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Tween<double> _positionTween;
   late Animation<double> _positionAnimation;
@@ -71,16 +85,19 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
   List<Widget>? badges;
   Widget? activeBadge;
 
-  double getPosition(bool isRTL) {
+  double getPositionForIndex(int index, bool isRTL) {
     double pace = 2 / (labels.length - 1);
     double position = (pace * index) - 1;
 
     if (isRTL) {
-      // If RTL, reverse the position calculation
       position = 1 - (pace * index);
     }
 
     return position;
+  }
+
+  double getPosition(bool isRTL) {
+    return getPositionForIndex(index, isRTL);
   }
 
   @override
@@ -91,13 +108,16 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
       isRtl = Directionality.of(context).index == 0;
     });
 
-    if(widget.controller != null) {
-      widget.controller!.onTabChange= (index) {
+    if (widget.controller != null) {
+      widget.controller!.onTabChange = (index) {
         setState(() {
           activeIcon = widget.icons![index];
           selectedTab = widget.labels[index];
         });
-        _initAnimationAndStart(_positionAnimation.value, getPosition(isRtl));
+        _initAnimationAndStart(
+          _positionAnimation.value,
+          getPositionForIndex(index, isRtl),
+        );
       };
     }
     labels = widget.labels;
@@ -111,8 +131,10 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
     activeIcon = icons[selectedTab];
 
     // init badge text
-    int selectedIndex = labels.indexWhere((element) => element == widget.initialSelectedTab);
-    activeBadge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
+    int selectedIndex = labels.indexOf(widget.initialSelectedTab);
+    activeBadge = (widget.badges != null && widget.badges!.length > 0)
+        ? widget.badges![selectedIndex]
+        : null;
 
     _animationController = AnimationController(
       duration: Duration(milliseconds: ANIM_DURATION),
@@ -126,13 +148,14 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
 
     _positionTween = Tween<double>(begin: getPosition(isRtl), end: 1);
 
-    _positionAnimation = _positionTween.animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOut))
+    _positionAnimation = _positionTween.animate(
+        CurvedAnimation(parent: _animationController, curve: Curves.easeOut))
       ..addListener(() {
         setState(() {});
       });
 
-    _fadeFabOutAnimation = Tween<double>(begin: 1, end: 0)
-        .animate(CurvedAnimation(parent: _fadeOutController, curve: Curves.easeOut))
+    _fadeFabOutAnimation = Tween<double>(begin: 1, end: 0).animate(
+        CurvedAnimation(parent: _fadeOutController, curve: Curves.easeOut))
       ..addListener(() {
         setState(() {
           fabIconAlpha = _fadeFabOutAnimation.value;
@@ -142,14 +165,18 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
         if (status == AnimationStatus.completed) {
           setState(() {
             activeIcon = icons[selectedTab];
-            int selectedIndex = labels.indexWhere((element) => element == selectedTab);
-            activeBadge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
+            int selectedIndex = labels.indexOf(selectedTab);
+            activeBadge = (widget.badges != null && widget.badges!.length > 0)
+                ? widget.badges![selectedIndex]
+                : null;
           });
         }
       });
 
-    _fadeFabInAnimation = Tween<double>(begin: 0, end: 1)
-        .animate(CurvedAnimation(parent: _animationController, curve: Interval(0.8, 1, curve: Curves.easeOut)))
+    _fadeFabInAnimation = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(
+            parent: _animationController,
+            curve: Interval(0.8, 1, curve: Curves.easeOut)))
       ..addListener(() {
         setState(() {
           fabIconAlpha = _fadeFabInAnimation.value;
@@ -225,7 +252,8 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
                         SizedBox(
                           height: widget.tabSize! + 15,
                           width: widget.tabSize! + 35,
-                          child: CustomPaint(painter: HalfPainter(color: widget.tabBarColor)),
+                          child: CustomPaint(
+                              painter: HalfPainter(color: widget.tabBarColor)),
                         ),
                         SizedBox(
                           height: widget.tabSize,
@@ -249,10 +277,10 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
                                     ),
                                     activeBadge != null
                                         ? Positioned(
-                                      top: 0,
-                                      right: 0,
-                                      child: activeBadge!,
-                                    )
+                                            top: 0,
+                                            right: 0,
+                                            child: activeBadge!,
+                                          )
                                         : SizedBox(),
                                   ],
                                 ),
@@ -277,8 +305,10 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
     return labels.map((tabLabel) {
       IconData? icon = icons[tabLabel];
 
-      int selectedIndex = labels.indexWhere((element) => element == tabLabel);
-      Widget? badge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
+      final selectedIndex = labels.indexOf(tabLabel);
+      Widget? badge = (widget.badges != null && widget.badges!.length > 0)
+          ? widget.badges![selectedIndex]
+          : null;
 
       return MotionTabItem(
         selected: selectedTab == tabLabel,
@@ -288,13 +318,33 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
         tabIconColor: widget.tabIconColor ?? Colors.black,
         tabIconSize: widget.tabIconSize,
         badge: badge,
+        // callbackFunction: () {
+        //   setState(() {
+        //     activeIcon = icon;
+        //     selectedTab = tabLabel;
+        //     widget.onTabItemSelected!(index);
+        //   });
+        //   _initAnimationAndStart(_positionAnimation.value, getPosition(isRtl));
+        // },
         callbackFunction: () {
+          // Ask the host app whether this tab change is allowed.
+          final canChange = widget.onTabWillChange?.call(selectedIndex) ?? true;
+
+          if (!canChange) {
+            return;
+          }
+
           setState(() {
             activeIcon = icon;
             selectedTab = tabLabel;
-            widget.onTabItemSelected!(index);
           });
-          _initAnimationAndStart(_positionAnimation.value, getPosition(isRtl));
+
+          widget.onTabItemSelected?.call(selectedIndex);
+
+          _initAnimationAndStart(
+            _positionAnimation.value,
+            getPositionForIndex(selectedIndex, isRtl),
+          );
         },
       );
     }).toList();
